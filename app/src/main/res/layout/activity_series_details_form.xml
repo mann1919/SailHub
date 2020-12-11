@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SeriesDetailsForm">
+
+    <EditText
+        android:id="@+id/etSeriesName"
+        style="@android:style/Widget.EditText"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/custom_box"
+        android:ems="10"
+        android:inputType="text"
+
+        android:paddingLeft="20dp"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeriesNameAsk" />
+
+    <EditText
+        android:id="@+id/etNoOfRaces"
+        style="@android:style/Widget.EditText"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/custom_box"
+        android:ems="10"
+        android:inputType="number"
+        android:paddingLeft="20dp"
+
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNoOfRaces" />
+
+    <EditText
+        android:id="@+id/etNoOfCompetitors"
+        style="@android:style/Widget.EditText"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:autofillHints=""
+        android:background="@drawable/custom_box"
+        android:ems="10"
+        android:inputType="number"
+        android:paddingLeft="20dp"
+
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNoOfCompetitors" />
+
+    <TextView
+        android:id="@+id/tvSeriesNameAsk"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="170dp"
+
+        android:text="Series Name"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNoOfRaces"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="50dp"
+
+        android:text="Number of Races"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSeriesName" />
+
+    <TextView
+        android:id="@+id/tvNoOfCompetitors"
+        android:layout_width="450dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="50dp"
+        android:text="Number of Competitors"
+        android:textColor="#707070"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNoOfRaces" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="353dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="#676262"
+        android:textSize="30sp"
+        app:backgroundTint="#D2C587"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNoOfCompetitors"
+        app:layout_constraintVertical_bias="0.323" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

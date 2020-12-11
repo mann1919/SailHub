@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListSeries">
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSeriesList"
+        android:layout_width="match_parent"
+        android:layout_height="588dp"
+        android:textAlignment="center"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddSeries"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvListOfSeries"
+        app:layout_constraintVertical_bias="0.435" />
+
+    <TextView
+        android:id="@+id/tvListOfSeries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="#D2C587"
+        android:text="List Of Series"
+        android:textAlignment="center"
+        android:textColor="#333232"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/rvSeriesList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.526" />
+
+    <Button
+        android:id="@+id/btnAddSeries"
+        android:layout_width="304dp"
+        android:layout_height="68dp"
+        android:background="@drawable/custom_button"
+        android:text="Add New Series"
+        android:textAllCaps="false"
+        android:textColor="#333232"
+        android:textSize="30sp"
+        app:backgroundTint="#D2C587"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvSeriesList"
+        app:layout_constraintVertical_bias="0.389" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SailHub</string>
+    <string name="UserID">User ID</string>
+    <string name="Password">Password</string>
+    <string-array name="series">
+        <item>Test Series</item>
+        <item>Series B</item>
+        <item>Series C</item>
+        <item>Series D</item>
+        <item>Series E</item>
+    </string-array>
+</resources>
