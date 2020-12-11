@@ -21,7 +21,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
         inflater = LayoutInflater.from(ct);
         this.editModelArrayList = editModelArrayList;
 
-    }//constructor
+    }
 
     @NonNull
     @Override
