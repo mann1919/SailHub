@@ -10,4 +10,5 @@ public class EditModel {
     public void setEditTextValue(String editTextValue) {
         this.editTextValue = editTextValue;
     }
+
 }

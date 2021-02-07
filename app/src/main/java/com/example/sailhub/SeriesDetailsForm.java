@@ -53,6 +53,7 @@ public class SeriesDetailsForm extends AppCompatActivity {
                     Toast.makeText(SeriesDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), CompetitorDetailsForm.class);
                     intent.putExtra("value",sName);
+                    intent.putExtra("compNo",sNoOfCompetitors);
                     startActivity(intent);
                 }//if
                 else

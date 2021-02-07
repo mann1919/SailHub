@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
     @Override
     public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder, int position) {
 
-        holder.etClass.setText(editModelArrayList.get(position).getEditTextValue());
+        holder.tvIndex.setText(editModelArrayList.get(position).getEditTextValue());
         Log.d("print","yes");
     }
 

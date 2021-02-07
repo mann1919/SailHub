@@ -17,61 +17,80 @@ import java.util.ArrayList;
 public class CompetitorDetailsForm extends AppCompatActivity {
     String sName;
     TextView seriesName;
-    EditText Class,PY,sailNo,helmName,crewName;
     Button addCompetitor;
+    int noOfComp;
     RecyclerView rvCompetitors;
     DBHelper DB;
+    public ArrayList<EditModel> editModelArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_competitor_details_form);
-
 
         //get series name
         seriesName = findViewById(R.id.tvSeriesName);
         sName = getIntent().getExtras().getString("value");
         seriesName.setText(sName);
 
-        //the inputs
-        Class = (EditText)findViewById(R.id.etClass);
-        PY = (EditText)findViewById(R.id.etPY);
-        sailNo = (EditText) findViewById(R.id.etSailNo);
-        helmName = (EditText) findViewById(R.id.etHelmName);
-        crewName = (EditText) findViewById(R.id.etCrewName);
-
-        rvCompetitors = findViewById(R.id.rvCompetitors);
-
         DB = DBHelper.getInstance(this);
 
         addCompetitor = (Button) findViewById(R.id.btnAddCompetitors);
 
-        CompetitorDetailAdapter myAdapter = new CompetitorDetailAdapter(this);
+        editModelArrayList = populateList();
+        CompetitorDetailAdapter myAdapter = new CompetitorDetailAdapter(this,editModelArrayList);
 
+        rvCompetitors = findViewById(R.id.rvCompetitors);
         rvCompetitors.setAdapter(myAdapter);
         rvCompetitors.setLayoutManager(new LinearLayoutManager(this));
 
         addCompetitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cClass = Class.getText().toString();
-                int cPY = Integer.parseInt(PY.getText().toString());
-                int cSailNo = Integer.parseInt(sailNo.getText().toString());
-                String cHelmName = helmName.getText().toString();
-                String cCrewName = crewName.getText().toString();
+                try {
+                    for (int i = 0; i < noOfComp; i++) {
+                        View rowView = rvCompetitors.getChildAt(i);
 
-                Boolean checkInsertData = DB.insertCompetitorData(cClass, cPY, cSailNo, cHelmName, cCrewName);
+                        EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
+                        EditText PY = (EditText)rowView.findViewById(R.id.etPY);
+                        EditText sailNo = (EditText)rowView.findViewById(R.id.etSailNo);
+                        EditText helmName = (EditText)rowView.findViewById(R.id.etHelmName);
+                        EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
 
-                if(checkInsertData==true) {
+                        String cClass = bClass.getText().toString();
+                        int cPY = Integer.parseInt(PY.getText().toString());
+                        int cSailNo = Integer.parseInt(sailNo.getText().toString());
+                        String cHelmName = helmName.getText().toString();
+                        String cCrewName = crewName.getText().toString();
+
+                        Boolean checkInsertData = DB.insertCompetitorData(cClass, cPY, cSailNo, cHelmName, cCrewName);
+
+                        if (!checkInsertData)
+                            throw new Exception("Error while inserting new entry");
+                    }
+
                     Toast.makeText(CompetitorDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), ListSeries.class);
-
                     startActivity(intent);
-                }//if
-                else
-                    Toast.makeText(CompetitorDetailsForm.this, "New Entry Not Inserted, try again", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception ex) {
+                    Toast.makeText(CompetitorDetailsForm.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
+    }
+    private ArrayList<EditModel> populateList(){
+
+        ArrayList<EditModel> list = new ArrayList<>();
+        noOfComp = getIntent().getIntExtra("compNo",0);
+
+        for(int i = 1; i <=noOfComp; i++){
+            EditModel editModel = new EditModel();
+            editModel.setEditTextValue(String.valueOf(i));
+            list.add(editModel);
+        }
+
+        return list;
     }
 }
