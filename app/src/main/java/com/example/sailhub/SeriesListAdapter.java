@@ -14,11 +14,14 @@ import java.util.ArrayList;
 
 public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.MyViewHolder>{
 
-    ArrayList<String> data;
+    ArrayList<String> seriesList;
     Context context;
-    public SeriesListAdapter(Context ct, ArrayList data){
+    private OnSeriesListener seriesListener;
+
+    public SeriesListAdapter(Context ct, ArrayList data,OnSeriesListener seriesListener){
         context = ct;
-        this.data =  data;
+        this.seriesList =  data;
+        this.seriesListener = seriesListener;
     }
 
     @NonNull
@@ -26,28 +29,40 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater= LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_row_series,parent,false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(view,seriesListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.sName.setText(String.valueOf(data.get(position)));
+        holder.sName.setText(String.valueOf(seriesList.get(position)));
 
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return seriesList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView sName;
-        public MyViewHolder(@NonNull View itemView){
-
+        OnSeriesListener onSeriesListener;
+        public MyViewHolder(@NonNull View itemView, OnSeriesListener onSeriesListener){
             super(itemView);
             sName = itemView.findViewById(R.id.tvSeriesName);
+            this.onSeriesListener = onSeriesListener;
+
+            itemView.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View v) {
+            onSeriesListener.onSeriesClick(getAdapterPosition());
+        }
     }
+
+    public interface OnSeriesListener{
+        void onSeriesClick(int position);
+    }
+
 }

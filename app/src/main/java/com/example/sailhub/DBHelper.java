@@ -25,13 +25,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase ClubDB) {
         String sqlUsers = "create Table users (userId INTEGER PRIMARY KEY, password TEXT)";
-        String sqlSeries = "create Table series (series_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT, no_of_races INTEGER, no_of_competitors INTEGER)";
-        String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_id INTEGER, FOREIGN KEY (series_id) REFERENCES series(series_id))";
-        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, PY INTEGER, sail_no INTEGER, helm_name TEXT, crew_name TEXT, elapsed INTEGER, laps INTEGER)";
+        String sqlSeries = "create Table series (series_number INTEGER  , series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
+        String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT , FOREIGN KEY (series_name) REFERENCES series(series_name))";
+        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, PY INTEGER, sail_no INTEGER, helm_name TEXT, crew_name TEXT, elapsed INTEGER, laps INTEGER, corrected INTEGER)";
         ClubDB.execSQL(sqlUsers);
         ClubDB.execSQL(sqlSeries);
         ClubDB.execSQL(sqlRace);
         ClubDB.execSQL(sqlRaceRecords);
+        //, FOREIGN KEY (series_name) REFERENCES series(series_name)
     }
 
     @Override
@@ -91,9 +92,24 @@ public class DBHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+    public Boolean insertRaceEntries(String series_name, int no_of_races) {
+        SQLiteDatabase ClubDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        for(int i =0 ; i < no_of_races; i++) {
+            contentValues.put("series_name", series_name);
+        }//for
 
-    Cursor readSeriesName(){
-        String qry= "SELECT * FROM series ORDER BY series_id DESC" ;
+        long result = ClubDB.insert("race", null, contentValues);
+           //for
+        if (result == -1)
+            return false;
+        else
+            return true;
+
+    }
+
+    public Cursor readRaceResult(String sName,Integer raceID){
+        String qry= "SELECT Class,PY,sail_no,helm_name,crew_name,elapsed,laps,corrected FROM raceRecords";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -103,15 +119,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }//cursor
 
-    public Boolean insertCompetitorData(String Class, int PY, int sail_no, String helm_name, String crew_name) {
+    public Cursor getRaceIds(String sName) {
+        String qry = "SELECT race_id FROM race WHERE series_name = '" +  sName +"'";
+        SQLiteDatabase ClubDB = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(ClubDB!= null){
+            cursor = ClubDB.rawQuery(qry,null);
+        }//if
+        return cursor;
+    }
+
+    public Cursor readSeriesName(){
+        String qry= "SELECT series_name FROM series" ;
+        SQLiteDatabase ClubDB = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(ClubDB!= null){
+            cursor = ClubDB.rawQuery(qry,null);
+        }//if
+        return cursor;
+    }//cursor
+
+    public Boolean insertCompetitorData(int race_id, String Class, int PY, int sail_no, String helm_name, String crew_name) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put("race_id", race_id);
         contentValues.put("Class", Class);
         contentValues.put("PY", PY);
         contentValues.put("sail_no", sail_no);
         contentValues.put("helm_name", helm_name);
         contentValues.put("crew_name", crew_name);
-        long result = ClubDB.insert("raceRecords", null, contentValues);
+        long result = ClubDB.insert("raceRecords", null, contentValues) ;
         if (result == -1)
             return false;
         else

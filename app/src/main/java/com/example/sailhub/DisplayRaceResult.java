@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -17,30 +18,35 @@ public class DisplayRaceResult extends AppCompatActivity {
 
     String[] columnHeaders={"Rank","SailNo","HelmName","CrewName","PY","Elapsed","Laps","Corrected","Points"};
     String[][] records;
-
+    String sName;
+    TextView seriesName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_race_result);
 
+        seriesName = findViewById(R.id.tvNameOfSeries);
+        sName = getIntent().getExtras().getString("nameOfSeries");
+        seriesName.setText(sName);
+        final TableView<String[]> tb = (TableView<String[]>) findViewById(R.id.tableView);
+        tb.setColumnCount(columnHeaders.length);
+        tb.setHeaderBackgroundColor(Color.parseColor("#E4D5B3"));
 
-            final TableView<String[]> tb = (TableView<String[]>) findViewById(R.id.tableView);
-            tb.setColumnCount(columnHeaders.length);
-            tb.setHeaderBackgroundColor(Color.parseColor("#E4D5B3"));
+        //POPULATE
+        populateData();
 
-            //POPULATE
-            populateData();
+        //ADAPTERS
+        tb.setHeaderAdapter(new SimpleTableHeaderAdapter(this,columnHeaders));
+        tb.setDataAdapter(new SimpleTableDataAdapter(this, records));
 
-            //ADAPTERS
-            tb.setHeaderAdapter(new SimpleTableHeaderAdapter(this,columnHeaders));
-            tb.setDataAdapter(new SimpleTableDataAdapter(this, records));
-
+            /*
             tb.addDataClickListener(new TableDataClickListener() {
                 @Override
                 public void onDataClicked(int rowIndex, Object clickedData) {
                     Toast.makeText(DisplayRaceResult.this, ((String[])clickedData)[1], Toast.LENGTH_SHORT).show();
                 }
             });
+             */
 
         }
         private void populateData()

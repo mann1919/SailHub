@@ -7,17 +7,31 @@
     tools:context=".DisplayRaceResult">
 
 
+        <TextView
+            android:id="@+id/tvNameOfSeries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D2C587"
+            android:padding="20dp"
+            android:text="Series Name"
+            android:textAlignment="center"
+            android:textColor="#333232"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <de.codecrafters.tableview.TableView
             android:id="@+id/tableView"
-            android:layout_width="714dp"
-            android:layout_height="383dp"
-            android:layout_gravity="center"
-            android:layout_margin="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.102" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

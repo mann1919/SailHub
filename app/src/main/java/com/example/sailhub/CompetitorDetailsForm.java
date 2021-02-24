@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
     RecyclerView rvCompetitors;
     DBHelper DB;
     public ArrayList<EditModel> editModelArrayList;
+    public ArrayList<Integer> raceIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         seriesName.setText(sName);
 
         DB = DBHelper.getInstance(this);
+        raceIds = new ArrayList<>();
 
         addCompetitor = (Button) findViewById(R.id.btnAddCompetitors);
 
@@ -47,25 +50,30 @@ public class CompetitorDetailsForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    for (int i = 0; i < noOfComp; i++) {
-                        View rowView = rvCompetitors.getChildAt(i);
+                    getRId(sName);
 
-                        EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
-                        EditText PY = (EditText)rowView.findViewById(R.id.etPY);
-                        EditText sailNo = (EditText)rowView.findViewById(R.id.etSailNo);
-                        EditText helmName = (EditText)rowView.findViewById(R.id.etHelmName);
-                        EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
+                    for (int raceId : raceIds) {
+                        for (int i = 0; i < noOfComp; i++) {
 
-                        String cClass = bClass.getText().toString();
-                        int cPY = Integer.parseInt(PY.getText().toString());
-                        int cSailNo = Integer.parseInt(sailNo.getText().toString());
-                        String cHelmName = helmName.getText().toString();
-                        String cCrewName = crewName.getText().toString();
+                            View rowView = rvCompetitors.getChildAt(i);
+                            EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
+                            EditText PY = (EditText)rowView.findViewById(R.id.etPY);
+                            EditText sailNo = (EditText)rowView.findViewById(R.id.etSailNo);
+                            EditText helmName = (EditText)rowView.findViewById(R.id.etHelmName);
+                            EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
 
-                        Boolean checkInsertData = DB.insertCompetitorData(cClass, cPY, cSailNo, cHelmName, cCrewName);
 
-                        if (!checkInsertData)
-                            throw new Exception("Error while inserting new entry");
+                            String cClass = bClass.getText().toString();
+                            int cPY = Integer.parseInt(PY.getText().toString());
+                            int cSailNo = Integer.parseInt(sailNo.getText().toString());
+                            String cHelmName = helmName.getText().toString();
+                            String cCrewName = crewName.getText().toString();
+
+                            Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
+
+                            if (!checkInsertData)
+                                throw new Exception("Error while inserting new entry");
+                        }
                     }
 
                     Toast.makeText(CompetitorDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
@@ -80,14 +88,28 @@ public class CompetitorDetailsForm extends AppCompatActivity {
 
 
     }
+
+    void getRId(String sName) {
+
+        Cursor cursor = DB.getRaceIds(sName);
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show();
+
+        } else {
+            while (cursor.moveToNext()) {
+                raceIds.add(cursor.getInt(0));
+            }//while
+        }//else
+    }
     private ArrayList<EditModel> populateList(){
 
         ArrayList<EditModel> list = new ArrayList<>();
         noOfComp = getIntent().getIntExtra("compNo",0);
 
         for(int i = 1; i <=noOfComp; i++){
+
             EditModel editModel = new EditModel();
-            editModel.setEditTextValue(String.valueOf(i));
+            editModel.setTvIndexValue(String.valueOf(i));
             list.add(editModel);
         }
 

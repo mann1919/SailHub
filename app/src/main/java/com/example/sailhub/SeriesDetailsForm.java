@@ -48,8 +48,9 @@ public class SeriesDetailsForm extends AppCompatActivity {
                 }//if
 
                 Boolean checkInsertData = DB.insertSeriesData(sName, sNoOfRaces, sNoOfCompetitors);
+                Boolean checkRaceData =  DB.insertRaceEntries(sName, sNoOfRaces);
 
-                if(checkInsertData==true) {
+                if(checkInsertData && checkRaceData) {
                     Toast.makeText(SeriesDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), CompetitorDetailsForm.class);
                     intent.putExtra("value",sName);

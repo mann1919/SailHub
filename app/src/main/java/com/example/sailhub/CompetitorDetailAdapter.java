@@ -1,6 +1,7 @@
 package com.example.sailhub;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,12 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
 
     @Override
     public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder, int position) {
-
-        holder.tvIndex.setText(editModelArrayList.get(position).getEditTextValue());
+        holder.tvIndex.setText(editModelArrayList.get(position).getTvIndexValue());
+        holder.etClass.setText(editModelArrayList.get(position).getEtClassValue());
+        holder.etPY.setText(editModelArrayList.get(position).getEtPYValue());
+        holder.etSailNo.setText(editModelArrayList.get(position).getEtSailNoValue());
+        holder.etHelmName.setText(editModelArrayList.get(position).getEtHelmNameValue());
+        holder.etCrewName.setText(editModelArrayList.get(position).getEtCrewNameValue());
         Log.d("print","yes");
     }
 
@@ -60,7 +65,94 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
             etHelmName = itemView.findViewById(R.id.etHelmName);
             etCrewName= itemView.findViewById(R.id.etCrewName);
 
-        }
+
+            etClass.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    editModelArrayList.get(getAdapterPosition()).setEtClassValue(etClass.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+            etPY.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    editModelArrayList.get(getAdapterPosition()).setEtPYValue(etPY.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+            etSailNo.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    editModelArrayList.get(getAdapterPosition()).setEtSailNoValue(etSailNo.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+            etHelmName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    editModelArrayList.get(getAdapterPosition()).setEtHelmNameValue(etHelmName.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+            etCrewName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    editModelArrayList.get(getAdapterPosition()).setEtCrewNameValue(etCrewName.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+        }//MyViewHolder
 
 
     }

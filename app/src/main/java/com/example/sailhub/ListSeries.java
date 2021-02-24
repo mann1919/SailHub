@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ListSeries extends AppCompatActivity {
+public class ListSeries extends AppCompatActivity implements SeriesListAdapter.OnSeriesListener {
 
     RecyclerView rvListOfSeries;
     Button addSeries;
@@ -32,7 +32,7 @@ public class ListSeries extends AppCompatActivity {
 
         storeDataInArrays();
 
-        SeriesListAdapter myAdapter = new SeriesListAdapter(this,seriesList);
+        SeriesListAdapter myAdapter = new SeriesListAdapter(this,seriesList, this);
 
         rvListOfSeries.setAdapter(myAdapter);
         rvListOfSeries.setLayoutManager(new LinearLayoutManager(this));
@@ -54,8 +54,17 @@ public class ListSeries extends AppCompatActivity {
 
         } else {
             while (cursor.moveToNext()) {
-                seriesList.add(cursor.getString(1));
+                seriesList.add(cursor.getString(0));
             }//while
         }//else
+    }
+
+    @Override
+    public void onSeriesClick(int position) {
+        //seriesList.get(position);
+        Intent intent = new Intent(ListSeries.this, DisplayRaceResult.class);
+        intent.putExtra("nameOfSeries",seriesList.get(position));
+
+        startActivity(intent);
     }
 }
