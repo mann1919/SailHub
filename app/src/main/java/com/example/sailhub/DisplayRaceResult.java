@@ -2,11 +2,13 @@ package com.example.sailhub;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.List;
 
 
 import de.codecrafters.tableview.TableView;
@@ -16,10 +18,11 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
 public class DisplayRaceResult extends AppCompatActivity {
 
-    String[] columnHeaders={"Rank","SailNo","HelmName","CrewName","PY","Elapsed","Laps","Corrected","Points"};
+    String[] columnHeaders={"Rank","Class","SailNo","HelmName","CrewName","PY","Elapsed","Laps","Corrected","Points"};
     String[][] records;
     String sName;
     TextView seriesName;
+    DBHelper DB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class DisplayRaceResult extends AppCompatActivity {
         tb.setColumnCount(columnHeaders.length);
         tb.setHeaderBackgroundColor(Color.parseColor("#E4D5B3"));
 
+        DB = DBHelper.getInstance(this);
         //POPULATE
         populateData();
 
@@ -51,81 +55,47 @@ public class DisplayRaceResult extends AppCompatActivity {
         }
         private void populateData()
         {
-            RaceRecord competitor=new RaceRecord();
-            ArrayList<RaceRecord> competitorsList=new ArrayList<>();
+            //CompetitorData competitor= new CompetitorData();
+            //ArrayList<RaceRecord> competitorsList=new ArrayList<>();
+
+            ArrayList<CompetitorData> competitorsList = new ArrayList<>();
+
+            Cursor cursor = DB.readRaceResult(sName,1);
+
+                while (cursor.moveToNext()) {
+
+                    int rank = 0;
+                    String bClass = cursor.getString(0);
+                    int sailNo = Integer.parseInt(cursor.getString(1));
+                    String helmName = cursor.getString(2);
+                    String crewName = cursor.getString(3);
+                    int PY = Integer.parseInt(cursor.getString(4));
+                    int elapsed = cursor.getString(5) == null ? -1 : Integer.parseInt(cursor.getString(5));
+                    int laps = cursor.getString(6) == null ? -1 : Integer.parseInt(cursor.getString(6));
+                    String corrected = "correct";
+                    int points = 0;
+                    CompetitorData competitor = new CompetitorData(rank, bClass, sailNo, helmName, crewName, PY, elapsed, laps, corrected, points);
+                    competitorsList.add(competitor);
+                }
+
+                records = new String[competitorsList.size()][columnHeaders.length];
+
+                for (int i = 0; i < competitorsList.size(); i++) {
+
+                    CompetitorData s = competitorsList.get(i);
 
 
+                    records[i][0] = String.valueOf(s.getRank());
+                    records[i][1] = s.getBoatClass();
+                    records[i][2] = String.valueOf(s.getSailNo());
+                    records[i][3] = s.getHelmName();
+                    records[i][4] = s.getCrewName();
+                    records[i][5] = String.valueOf(s.getPY());
+                    records[i][6] = s.getElapsed() == -1 ? "--" : String.valueOf(s.getElapsed());
+                    records[i][7] = s.getLaps() == -1 ? "--" : String.valueOf(s.getElapsed());
+                    records[i][8] = s.getCorrected();
+                    records[i][9] = String.valueOf(s.getPoints());
+                }//for
 
-            //competitor.setId("1");
-            competitor.setRank("");
-            competitor.setSailNo("123");
-            competitor.setHelmName("Tod M");
-            competitor.setCrewName("Venus");
-            competitor.setPY("143");
-            competitor.setElapsed("");
-            competitor.setLaps("");
-            competitor.setCorrected("");
-            competitor.setPoints("");
-            competitorsList.add(competitor);
-
-            competitor=new RaceRecord();
-           // competitor.setId("2");
-            competitor.setRank("");
-            competitor.setSailNo("456");
-            competitor.setHelmName("Philip");
-            competitor.setCrewName("Phi");
-            competitor.setPY("193");
-            competitor.setElapsed("");
-            competitor.setLaps("");
-            competitor.setCorrected("");
-            competitor.setPoints("");
-            competitorsList.add(competitor);
-
-            competitor=new RaceRecord();
-            //competitor.setId("3");
-            competitor.setRank("");
-            competitor.setSailNo("789");
-            competitor.setHelmName("Tom C");
-            competitor.setCrewName("Bass");
-            competitor.setPY("172");
-            competitor.setElapsed("");
-            competitor.setLaps("");
-            competitor.setCorrected("");
-            competitor.setPoints("");
-            competitorsList.add(competitor);
-
-            competitor=new RaceRecord();
-            //competitor.setId("4");
-            competitor.setRank("");
-            competitor.setSailNo("101");
-            competitor.setHelmName("Boss M");
-            competitor.setCrewName("");
-            competitor.setPY("187");
-            competitor.setElapsed("");
-            competitor.setLaps("");
-            competitor.setCorrected("");
-            competitor.setPoints("");
-            competitorsList.add(competitor);
-
-            records= new String[competitorsList.size()][columnHeaders.length];
-
-
-            for (int i=0;i<competitorsList.size();i++) {
-
-                RaceRecord s=competitorsList.get(i);
-
-               // records[i][0]=s.getId();
-                records[i][0]=s.getRank();
-                records[i][1]=s.getSailNo();
-                records[i][2]=s.getHelmName();
-                records[i][3]=s.getCrewName();
-                records[i][4]=s.getPY();
-                records[i][5]=s.getElapsed();
-                records[i][6]=s.getLaps();
-                records[i][7]=s.getCorrected();
-                records[i][8]=s.getPoints();
-
-            }
-
-        }
+        }//populate
 }

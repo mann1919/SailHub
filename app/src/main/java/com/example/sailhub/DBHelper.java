@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sqlUsers = "create Table users (userId INTEGER PRIMARY KEY, password TEXT)";
         String sqlSeries = "create Table series (series_number INTEGER  , series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
         String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT , FOREIGN KEY (series_name) REFERENCES series(series_name))";
-        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, PY INTEGER, sail_no INTEGER, helm_name TEXT, crew_name TEXT, elapsed INTEGER, laps INTEGER, corrected INTEGER)";
+        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, sail_no INTEGER, helm_name TEXT, crew_name TEXT, PY INTEGER, elapsed INTEGER, laps INTEGER, corrected INTEGER)";
         ClubDB.execSQL(sqlUsers);
         ClubDB.execSQL(sqlSeries);
         ClubDB.execSQL(sqlRace);
@@ -109,7 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readRaceResult(String sName,Integer raceID){
-        String qry= "SELECT Class,PY,sail_no,helm_name,crew_name,elapsed,laps,corrected FROM raceRecords";
+        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected FROM raceRecords";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
