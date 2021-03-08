@@ -35,7 +35,6 @@ public class SeriesDetailsForm extends AppCompatActivity {
                 int sNoOfRaces = Integer.parseInt(noOfRaces.getText().toString());
                 int sNoOfCompetitors = Integer.parseInt(noOfCompetitors.getText().toString());
 
-
                 if(sName.equals("")||noOfRaces.length()==0||noOfCompetitors.length()==0){
                     Toast.makeText(SeriesDetailsForm.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 }//if
