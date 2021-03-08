@@ -92,12 +92,10 @@ public class DBHelper extends SQLiteOpenHelper {
         else
             return true;
     }
-    public Boolean insertRaceEntries(String series_name, int no_of_races) {
+    public Boolean insertRaceEntries(String series_name) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        for(int i =0 ; i < no_of_races; i++) {
             contentValues.put("series_name", series_name);
-        }//for
 
         long result = ClubDB.insert("race", null, contentValues);
            //for
@@ -108,8 +106,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor readRaceResult(String sName,Integer raceID){
-        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected FROM raceRecords";
+    public Cursor readRaceResult(Integer raceID){
+        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected FROM raceRecords WHERE race_id = '" + raceID +"'";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;

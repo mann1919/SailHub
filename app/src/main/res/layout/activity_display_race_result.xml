@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".DisplayRaceResult">
 
-
         <TextView
             android:id="@+id/tvNameOfSeries"
             android:layout_width="match_parent"
@@ -17,21 +16,36 @@
             android:textAlignment="center"
             android:textColor="#333232"
             android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
+        <Button
+            android:id="@+id/btnAddResults"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+            android:layout_width="244dp"
+            android:layout_height="71dp"
+            android:layout_marginTop="68dp"
+            android:background="@drawable/custom_button"
+            android:text="Add Results"
+            android:textAllCaps="false"
+            android:textColor="#333232"
+            android:textSize="30sp"
+            app:backgroundTint="#D2C587"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tableView"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <de.codecrafters.tableview.TableView
             android:id="@+id/tableView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries"
+            app:layout_constraintBottom_toTopOf="@id/btnAddResults"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

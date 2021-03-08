@@ -15,11 +15,9 @@
         android:background="@drawable/custom_box"
         android:ems="10"
         android:inputType="text"
-
         android:paddingLeft="20dp"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeriesNameAsk" />
 
@@ -33,7 +31,6 @@
         android:ems="10"
         android:inputType="number"
         android:paddingLeft="20dp"
-
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,10 +47,8 @@
         android:ems="10"
         android:inputType="number"
         android:paddingLeft="20dp"
-
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNoOfCompetitors" />
 
@@ -62,11 +57,9 @@
         android:layout_width="450dp"
         android:layout_height="64dp"
         android:layout_marginTop="170dp"
-
         android:text="Series Name"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,11 +68,9 @@
         android:layout_width="450dp"
         android:layout_height="64dp"
         android:layout_marginTop="50dp"
-
         android:text="Number of Races"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSeriesName" />
 
@@ -92,7 +83,6 @@
         android:textColor="#707070"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etNoOfRaces" />
 
@@ -105,17 +95,14 @@
         android:background="@drawable/custom_button"
         android:text="Submit"
         android:textAllCaps="false"
-        android:textColor="#676262"
+        android:textColor="#333232"
         android:textSize="30sp"
         app:backgroundTint="#D2C587"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etNoOfCompetitors"
-        app:layout_constraintVertical_bias="0.323" />
-
-
+        app:layout_constraintVertical_bias="0.232" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,6 +68,16 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                             int cSailNo = Integer.parseInt(sailNo.getText().toString());
                             String cHelmName = helmName.getText().toString();
                             String cCrewName = crewName.getText().toString();
+                            if(cClass.equals("")){
+                                Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
+                            }//if
+
+                            if(PY.length()==0){
+                                Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
+                            }//if
+                            if(cHelmName.equals("")){
+                                Toast.makeText(CompetitorDetailsForm.this, "Enter Helm Name", Toast.LENGTH_SHORT).show();
+                            }//if
 
                             Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
 

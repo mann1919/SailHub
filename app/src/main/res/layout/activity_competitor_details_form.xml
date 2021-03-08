@@ -7,22 +7,20 @@
     tools:context=".CompetitorDetailsForm">
 
 
-
     <TextView
         android:id="@+id/tvSeriesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
         android:background="#D2C587"
+        android:padding="20dp"
         android:text="Series Name"
         android:textAlignment="center"
         android:textColor="#333232"
         android:textSize="60sp"
-        app:layout_constraintBottom_toTopOf="@+id/rvCompetitors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintBottom_toTopOf="@+id/rvCompetitors" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCompetitors"
@@ -34,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeriesName"
-        app:layout_constraintVertical_bias="0.435" />
+        app:layout_constraintVertical_bias="0.435"/>
 
     <Button
         android:id="@+id/btnAddCompetitors"

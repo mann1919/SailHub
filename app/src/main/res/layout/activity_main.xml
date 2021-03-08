@@ -14,7 +14,6 @@
         android:text="User ID"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/etUserId"/>
@@ -31,7 +30,6 @@
         android:textSize="25sp"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tvPassword"
         app:layout_constraintTop_toBottomOf="@id/tvUserId" />
@@ -45,7 +43,6 @@
         android:textColor="#707070"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/etPassword"
         app:layout_constraintTop_toBottomOf="@id/etUserId" />
@@ -63,7 +60,6 @@
         android:textSize="25sp"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPassword"
         app:layout_constraintBottom_toTopOf="@id/btnLogIn"/>
@@ -78,11 +74,10 @@
         android:background="@drawable/custom_button"
         android:text="Log In"
         android:textAllCaps="false"
-        android:textColor="#676262"
+        android:textColor="#333232"
         android:textSize="30sp"
         app:backgroundTint="#D2C587"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
@@ -95,10 +90,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvRegister"
-        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn"
-        app:layout_constraintVertical_bias="0.318" />
+        app:layout_constraintVertical_bias="0.321" />
 
     <TextView
         android:id="@+id/tvRegister"
@@ -111,7 +106,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.697"
+        app:layout_constraintHorizontal_bias="0.69"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn"
         app:layout_constraintVertical_bias="0.321" />
