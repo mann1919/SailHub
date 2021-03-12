@@ -20,32 +20,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <Button
-            android:id="@+id/btnAddResults"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-            android:layout_width="244dp"
-            android:layout_height="71dp"
-            android:layout_marginTop="68dp"
-            android:background="@drawable/custom_button"
-            android:text="Add Results"
-            android:textAllCaps="false"
-            android:textColor="#333232"
-            android:textSize="30sp"
-            app:backgroundTint="#D2C587"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRace"
+            android:layout_width="match_parent"
+            android:layout_height="800dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableView"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <de.codecrafters.tableview.TableView
-            android:id="@+id/tableView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries"
-            app:layout_constraintBottom_toTopOf="@id/btnAddResults"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
