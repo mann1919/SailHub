@@ -1,13 +1,14 @@
 package com.example.sailhub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.telephony.PreciseDataConnectionState;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,16 +19,15 @@ import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
-public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.MyViewHolder> {
+public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceResultAdapter.MyViewHolder> {
 
     private String[] columnHeaders = {"Rank", "Class", "SailNo", "Helm", "Crew", "PY", "Elapsed", "Laps", "Corrected", "Points"};
-    private LayoutInflater inflater;
     private DBHelper DB;
     private Context context;
 
     public static ArrayList<Integer> raceIds;
 
-    RaceResultAdapter(Context context, String sName){
+    DisplayRaceResultAdapter(Context context, String sName){
         this.DB = DBHelper.getInstance(context);
         this.raceIds = getRIds(sName);
         this.context = context;
@@ -38,14 +38,16 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_row_race, parent,false);
-        RaceResultAdapter.MyViewHolder holder = new RaceResultAdapter.MyViewHolder(view);
+        DisplayRaceResultAdapter.MyViewHolder holder = new DisplayRaceResultAdapter.MyViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        int raceId = raceIds.get(position);
+        final int raceId = raceIds.get(position);
         TableView tb = holder.raceTableView;
+        Button result = holder.addResult;
+
 
         //create table view
         tb.setColumnCount(columnHeaders.length);
@@ -56,12 +58,25 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
 
         //ADAPTERS
         SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(context, columnHeaders);
-        headerAdapter.setPaddings(5, 0, 2, 10);
+        headerAdapter.setPaddings(2, 2, 2, 10);
+        headerAdapter.setTextSize(16);
         tb.setHeaderAdapter(headerAdapter);
 
         SimpleTableDataAdapter dataAdapter = new SimpleTableDataAdapter(context, tableData);
-        dataAdapter.setPaddings(0, 0, 5, 10);
+        dataAdapter.setPaddings(2, 2, 2, 10);
+        dataAdapter.setTextSize(15);
         tb.setDataAdapter(dataAdapter);
+
+        result.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addIntent = new Intent(context, EnterRaceResult.class);
+                addIntent.putExtra("raceId",raceId);
+                context.startActivity(addIntent);
+
+            }
+        });
+
     }
 
     private String[][] getTableData(int raceId) {
@@ -78,7 +93,7 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
             int elapsed = cursor.getString(5) == null ? -1 : Integer.parseInt(cursor.getString(5));
             int laps = cursor.getString(6) == null ? -1 : Integer.parseInt(cursor.getString(6));
             int corrected = cursor.getString(7) == null ? -1 : Integer.parseInt(cursor.getString(7));
-            int points = rankCount;
+            int points = cursor.getString(8) == null ? -1 : Integer.parseInt(cursor.getString(8));
 
             rankCount++;
             CompetitorData competitor = new CompetitorData(rank, bClass, sailNo, helmName, crewName, PY, elapsed, laps, corrected, points);
@@ -97,7 +112,7 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
             records[i][6] = s.getElapsed() == -1 ? "--" : String.valueOf(s.getElapsed());
             records[i][7] = s.getLaps() == -1 ? "--" : String.valueOf(s.getLaps());
             records[i][8] = s.getCorrected() == -1 ? "--" : String.valueOf(s.getCorrected());
-            records[i][9] = String.valueOf(s.getPoints());
+            records[i][9] = s.getPoints() == -1 ? "--" : String.valueOf(s.getElapsed());
         }//for
 
         return records;
@@ -112,7 +127,7 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
         ArrayList<Integer> raceIds = new ArrayList<>();
         Cursor cursor = DB.getRaceIds(sName);
         if (cursor.getCount() == 0) {
-            //Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
                 raceIds.add(cursor.getInt(0));
@@ -124,11 +139,12 @@ public class RaceResultAdapter extends RecyclerView.Adapter<RaceResultAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TableView raceTableView;
-        //public Button addResult;
+        public Button addResult;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             raceTableView = itemView.findViewById(R.id.tableView);
-            //addResult = itemView.findViewById(R.id.tvSeriesName);
+            addResult = itemView.findViewById(R.id.btnAddResults);
+
         }
     }
 }

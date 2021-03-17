@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sqlUsers = "create Table users (userId INTEGER PRIMARY KEY, password TEXT)";
         String sqlSeries = "create Table series (series_number INTEGER  , series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
         String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT , FOREIGN KEY (series_name) REFERENCES series(series_name))";
-        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, sail_no INTEGER, helm_name TEXT, crew_name TEXT, PY INTEGER, elapsed INTEGER, laps INTEGER, corrected INTEGER)";
+        String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, sail_no INTEGER, helm_name TEXT, crew_name TEXT, PY INTEGER, elapsed INTEGER, laps INTEGER, corrected INTEGER, points INTEGER)";
         ClubDB.execSQL(sqlUsers);
         ClubDB.execSQL(sqlSeries);
         ClubDB.execSQL(sqlRace);
@@ -107,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readRaceResult(Integer raceID){
-        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected FROM raceRecords WHERE race_id = '" + raceID +"'";
+        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected,points FROM raceRecords WHERE race_id = '" + raceID +"'";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -119,6 +119,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getRaceIds(String sName) {
         String qry = "SELECT race_id FROM race WHERE series_name = '" +  sName +"'";
+        SQLiteDatabase ClubDB = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(ClubDB!= null){
+            cursor = ClubDB.rawQuery(qry,null);
+        }//if
+        return cursor;
+    }
+    public Cursor getCompetitors(Integer raceID) {
+        String qry= "SELECT Class,sail_no,helm_name FROM raceRecords WHERE race_id = '" + raceID +"'";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -149,6 +159,21 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("helm_name", helm_name);
         contentValues.put("crew_name", crew_name);
         long result = ClubDB.insert("raceRecords", null, contentValues) ;
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public Boolean insertRaceData(int race_id, String Class, int sail_no, String helm_name, int elapsed, int laps) {
+        SQLiteDatabase ClubDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("elapsed", elapsed);
+        contentValues.put("laps", laps);
+
+        String[] args = new String[]{String.valueOf(race_id), Class,String.valueOf(sail_no),helm_name};
+
+        long result = ClubDB.update("raceRecords", contentValues, "race_id=? AND Class=? AND sail_no=? AND helm_name=?" , args) ;
         if (result == -1)
             return false;
         else

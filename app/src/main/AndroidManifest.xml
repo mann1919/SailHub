@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SailHub">
-        <activity android:name=".CompetitorDetailsForm"></activity>
+        <activity android:name=".EnterRaceResult"></activity>
+        <activity android:name=".CompetitorDetailsForm" />
         <activity android:name=".SeriesDetailsForm" />
-        <activity android:name=".DisplayRaceResult"></activity>
+        <activity android:name=".DisplayRaceResult" />
         <activity android:name=".ListSeries" />
         <activity android:name=".SignUp" />
         <activity android:name=".MainActivity">
