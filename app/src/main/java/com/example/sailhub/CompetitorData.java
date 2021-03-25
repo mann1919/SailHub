@@ -3,10 +3,10 @@ package com.example.sailhub;
 public class CompetitorData {
 
 
-    int rank, points, sailNo, PY, elapsed, laps, corrected;
-    String boatClass,helmName,crewName;
+    int rank, points, sailNo, PY,laps ;
+    String boatClass,helmName,crewName,elapsed,corrected;
 
-    public CompetitorData(int rank, String bClass,int sailNo,String helmName,String crewName,int PY,int elapsed,int laps,int corrected,int points){
+    public CompetitorData(int rank, String bClass,int sailNo,String helmName,String crewName,int PY,String elapsed,int laps,String corrected,int points){
         this.rank = rank;
         this.boatClass = bClass;
         this.sailNo = sailNo;
@@ -63,10 +63,10 @@ public class CompetitorData {
         this.PY = PY;
     }
 
-    public Integer getElapsed() {
+    public String getElapsed() {
         return elapsed;
     }
-    public void setElapsed(int elapsed) {
+    public void setElapsed(String elapsed) {
         this.elapsed = elapsed;
     }
 
@@ -77,10 +77,10 @@ public class CompetitorData {
         this.laps = laps;
     }
 
-    public Integer getCorrected() {
+    public String getCorrected() {
         return corrected;
     }
-    public void setCorrected(int corrected) {
+    public void setCorrected(String corrected) {
         this.corrected = corrected;
     }
 

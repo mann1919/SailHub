@@ -35,15 +35,18 @@ public class SeriesDetailsForm extends AppCompatActivity {
                 int sNoOfRaces = Integer.parseInt(noOfRaces.getText().toString());
                 int sNoOfCompetitors = Integer.parseInt(noOfCompetitors.getText().toString());
 
-                if(sName.equals("")||noOfRaces.length()==0||noOfCompetitors.length()==0){
-                    Toast.makeText(SeriesDetailsForm.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+                if(sName.equals("")){
+                    Toast.makeText(SeriesDetailsForm.this, "Please enter series name", Toast.LENGTH_SHORT).show();
+                    return;
                 }//if
 
                 if(sNoOfRaces==0){
                     Toast.makeText(SeriesDetailsForm.this, "Number of races cannot be 0", Toast.LENGTH_SHORT).show();
+                    return;
                 }//if
                 if(sNoOfCompetitors==0){
                     Toast.makeText(SeriesDetailsForm.this, "Number of competitors cannot be 0", Toast.LENGTH_SHORT).show();
+                    return;
                 }//if
 
                 Boolean checkInsertData = DB.insertSeriesData(sName, sNoOfRaces, sNoOfCompetitors);
@@ -52,6 +55,7 @@ public class SeriesDetailsForm extends AppCompatActivity {
                     Boolean checkRaceData = DB.insertRaceEntries(sName);
                     if(!checkRaceData){
                         Toast.makeText(SeriesDetailsForm.this, "Error please try again", Toast.LENGTH_SHORT).show();
+                        return;
                     }//if
                 }
                 if(checkInsertData) {

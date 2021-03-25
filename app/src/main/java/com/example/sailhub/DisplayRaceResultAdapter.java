@@ -85,14 +85,18 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
         int rankCount = 1;
         while (cursor.moveToNext()) {
             int rank = rankCount;
+
             String bClass = cursor.getString(0);
             int sailNo = Integer.parseInt(cursor.getString(1));
             String helmName = cursor.getString(2);
             String crewName = cursor.getString(3) == null ? "" :cursor.getString(3) ;
             int PY = Integer.parseInt(cursor.getString(4));
-            int elapsed = cursor.getString(5) == null ? -1 : Integer.parseInt(cursor.getString(5));
+            String elapsed = cursor.getString(5) == null ? "" : cursor.getString(5);
             int laps = cursor.getString(6) == null ? -1 : Integer.parseInt(cursor.getString(6));
-            int corrected = cursor.getString(7) == null ? -1 : Integer.parseInt(cursor.getString(7));
+            String corrected = cursor.getString(7) == null ? "" : cursor.getString(7);
+            if(elapsed != null) {
+                DB.insertPoints(raceId, bClass, sailNo, helmName, rank);
+            }
             int points = cursor.getString(8) == null ? -1 : Integer.parseInt(cursor.getString(8));
 
             rankCount++;
@@ -109,10 +113,10 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
             records[i][3] = s.getHelmName();
             records[i][4] = s.getCrewName() == "" ? "--" : s.getCrewName();
             records[i][5] = String.valueOf(s.getPY());
-            records[i][6] = s.getElapsed() == -1 ? "--" : String.valueOf(s.getElapsed());
+            records[i][6] = s.getElapsed() == "" ? "--" : s.getElapsed();
             records[i][7] = s.getLaps() == -1 ? "--" : String.valueOf(s.getLaps());
-            records[i][8] = s.getCorrected() == -1 ? "--" : String.valueOf(s.getCorrected());
-            records[i][9] = s.getPoints() == -1 ? "--" : String.valueOf(s.getElapsed());
+            records[i][8] = s.getCorrected() == "" ? "--" : s.getCorrected();
+            records[i][9] = s.getPoints() == -1 ? "--" : String.valueOf(s.getPoints());
         }//for
 
         return records;

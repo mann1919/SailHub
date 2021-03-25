@@ -39,7 +39,7 @@
                 android:layout_margin="15dp"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:hint="Enter Class"
+                android:hint="Class"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/tvIndexTwo"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:inputType="number"
-                android:hint="Enter PY"
+                android:hint="SailNo"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:inputType="number"
-                android:hint="Enter SailNo"
+                android:hint="HelmName"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -73,17 +73,32 @@
                 app:layout_constraintStart_toEndOf="@+id/tvDisplaySailNo"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tvDisplayPY"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:inputType="number"
+                android:hint="PY"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/tvDisplayHelmName"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/etElapsed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Enter elapsed"
+                android:layout_margin="15dp"
+                android:hint="Enter hh:mm:ss"
+                android:inputType="time"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:layout_margin="15dp"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvDisplayHelmName"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/tvDisplayPY"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText

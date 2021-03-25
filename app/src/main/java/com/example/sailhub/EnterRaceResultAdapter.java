@@ -41,6 +41,7 @@ public class EnterRaceResultAdapter extends RecyclerView.Adapter<com.example.sai
         holder.tvDisplayClass.setText(editModelArrayList.get(position).getTvClassValue());
         holder.tvDisplaySailNo.setText(editModelArrayList.get(position).getTvSailNoValue());
         holder.tvDisplayHelmName.setText(editModelArrayList.get(position).getTvHelmNameValue());
+        holder.tvDisplayPY.setText(editModelArrayList.get(position).getTvPYValue());
         holder.etElapsed.setText(editModelArrayList.get(position).getEtElapsedValue());
         holder.etLaps.setText(editModelArrayList.get(position).getEtLapsValue());
         Log.d("print","yes");
@@ -52,7 +53,7 @@ public class EnterRaceResultAdapter extends RecyclerView.Adapter<com.example.sai
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView sName,tvIndexTwo,tvDisplayClass,tvDisplaySailNo,tvDisplayHelmName;
+        TextView sName,tvIndexTwo,tvDisplayClass,tvDisplaySailNo,tvDisplayHelmName,tvDisplayPY;
         EditText etElapsed,etLaps;
         public MyViewHolder(@NonNull View itemView){
 
@@ -62,6 +63,7 @@ public class EnterRaceResultAdapter extends RecyclerView.Adapter<com.example.sai
             tvDisplayClass = itemView.findViewById(R.id.tvDisplayClass);
             tvDisplaySailNo = itemView.findViewById(R.id.tvDisplaySailNo);
             tvDisplayHelmName = itemView.findViewById(R.id.tvDisplayHelmName);
+            tvDisplayPY = itemView.findViewById(R.id.tvDisplayPY);
             etElapsed = itemView.findViewById(R.id.etElapsed);
             etLaps= itemView.findViewById(R.id.etLaps);
 

@@ -30,15 +30,19 @@ public class EnterRaceResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_race_result);
-        //get series name
-        seriesName = findViewById(R.id.tvSeriesNameTwo);
-        sName = getIntent().getExtras().getString("value");
-        seriesName.setText(sName);
+
+        DB = DBHelper.getInstance(this);
 
         Bundle extras=getIntent().getExtras();
         raceId = extras.getInt("raceId");;
+        //get series name
+        seriesName = findViewById(R.id.tvSeriesNameTwo);
+        setSeriesName(raceId);
+        seriesName.setText(sName);
+        //get no_of_competitors
+        setSeriesName(sName);
 
-        DB = DBHelper.getInstance(this);
+
 
         addRaceResult = (Button) findViewById(R.id.btnSubmitResult);
 
@@ -53,30 +57,40 @@ public class EnterRaceResult extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    int maxLaps = 0;
 
-                        for (int i = 0; i < noOfComp; i++) {
+                    for (int i = 0; i < noOfComp; i++) {
+                        View rowView = rvEnterResult.getChildAt(i);
+                        EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
+                        int cLaps = Integer.parseInt(laps.getText().toString());
+                        if (cLaps > maxLaps)
+                            maxLaps = cLaps;
+                    }
 
-                            View rowView = rvEnterResult.getChildAt(i);
-                            TextView bClass = (TextView)rowView.findViewById(R.id.tvDisplayClass);
-                            TextView SailNo = (TextView)rowView.findViewById(R.id.tvDisplaySailNo);
-                            TextView helmName = (TextView)rowView.findViewById(R.id.tvDisplayHelmName);
-                            EditText elapsed = (EditText)rowView.findViewById(R.id.etElapsed);
-                            EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
+                    for (int i = 0; i < noOfComp; i++) {
+
+                        View rowView = rvEnterResult.getChildAt(i);
+                        TextView bClass = (TextView)rowView.findViewById(R.id.tvDisplayClass);
+                        TextView SailNo = (TextView)rowView.findViewById(R.id.tvDisplaySailNo);
+                        TextView helmName = (TextView)rowView.findViewById(R.id.tvDisplayHelmName);
+                        TextView PY = (TextView)rowView.findViewById(R.id.tvDisplayPY);
+                        EditText elapsed = (EditText)rowView.findViewById(R.id.etElapsed);
+                        EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
 
 
-                            String cClass = bClass.getText().toString();
-                            int cSailNo = Integer.parseInt(SailNo.getText().toString());
-                            String cHelmName = helmName.getText().toString();
-                            int cElapsed = Integer.parseInt(elapsed.getText().toString());
-                            int cLaps = Integer.parseInt(laps.getText().toString());
+                        String cClass = bClass.getText().toString();
+                        int cSailNo = Integer.parseInt(SailNo.getText().toString());
+                        String cHelmName = helmName.getText().toString();
+                        int cLaps = Integer.parseInt(laps.getText().toString());
+                        double cPY = Integer.parseInt(PY.getText().toString());
+                        String tempElapsed = elapsed.getText().toString();
+                        String cElapsed = calculateElapsed(tempElapsed,cLaps,maxLaps);
+                        String cCorrected =  calculateCorrected(cElapsed,cPY);
+                        Boolean checkInsertData = DB.insertRaceData(raceId, cClass, cSailNo, cHelmName, cElapsed, cLaps,cCorrected);
 
-
-
-                            Boolean checkInsertData = DB.insertRaceData(raceId, cClass, cSailNo, cHelmName, cElapsed, cLaps);
-
-                            if (!checkInsertData)
-                                throw new Exception("Error while inserting new entry");
-                        }
+                        if (!checkInsertData)
+                            throw new Exception("Error while inserting new entry");
+                    }
 
                     Toast.makeText(EnterRaceResult.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), ListSeries.class);
@@ -95,7 +109,6 @@ public class EnterRaceResult extends AppCompatActivity {
     private ArrayList<EditModel> populateList(){
 
         ArrayList<EditModel> list = new ArrayList<>();
-        noOfComp = 3;
         Cursor cursor = DB.getCompetitors(raceId);
 
         if (cursor.getCount() == 0) {
@@ -109,10 +122,79 @@ public class EnterRaceResult extends AppCompatActivity {
                 editModel.setTvClassValue(cursor.getString(0));
                 editModel.setTvSailNoValue(String.valueOf(cursor.getString(1)));
                 editModel.setTvHelmNameValue(cursor.getString(2));
+                editModel.setTvPYValue(String.valueOf(cursor.getString(3)));
                 list.add(editModel);
                 i++;
             }//while
         }//else
         return list;
     }
+
+
+    private String calculateElapsed(String elapsed, int laps,int maxLaps){
+
+        String[] elapsedTokens = elapsed.split(":");
+        int hours = Integer.parseInt(elapsedTokens[0])*3600;
+        int minutes = Integer.parseInt(elapsedTokens[1])*60;
+        int seconds = Integer.parseInt(elapsedTokens[2]);
+        double calcInSeconds = ((hours + minutes + seconds)/laps)* maxLaps;
+        int correctHours = (int) (calcInSeconds/3600);
+        int remainder1 = (int) (calcInSeconds - (correctHours * 3600));
+        int correctMinutes = remainder1/60;
+        int remainder2 = remainder1 - (correctMinutes *60);
+        int correctSeconds = remainder2;
+        String elapsedTime = String.valueOf(correctHours) +":"+ String.valueOf(correctMinutes) +":"+ String.valueOf(correctSeconds) ;
+        return elapsedTime;
+    }
+
+    private String calculateCorrected(String elapsed, double PY){
+
+        String[] elapsedTokens = elapsed.split(":");
+        int hours = Integer.parseInt(elapsedTokens[0])*3600;
+        int minutes = Integer.parseInt(elapsedTokens[1])*60;
+        int seconds = Integer.parseInt(elapsedTokens[2]);
+        double calcInSeconds = ((hours + minutes + seconds)/PY)*1000;
+        int correctHours = (int) (calcInSeconds/3600);
+        int remainder1 = (int) (calcInSeconds - (correctHours * 3600));
+        int correctMinutes = remainder1/60;
+        int remainder2 = remainder1 - (correctMinutes *60);
+        int correctSeconds = remainder2;
+        String finalHours = String.format("%02d", correctHours);
+        String finalMins = String.format("%02d", correctMinutes);
+        String finalSecs = String.format("%02d", correctSeconds);
+        //String correctedTime =  String.valueOf(correctHours) +":"+ String.valueOf(correctMinutes) +":"+ String.valueOf(correctSeconds);
+        String correctedTime = finalHours + ":" + finalMins + ":"+ finalSecs;
+        return correctedTime;
+    }
+
+    void setSeriesName(int raceId) {
+        Cursor cursor = DB.getSeriesName(raceId);
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No Data.", Toast.LENGTH_SHORT).show();
+
+        } else {
+            while (cursor.moveToNext()) {
+                sName = cursor.getString(0);
+            }//while
+        }//else
+    }
+
+    void setSeriesName(String sName) {
+        Cursor cursor = DB.getNoOfCompetitors(sName);
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No Data.", Toast.LENGTH_SHORT).show();
+
+        } else {
+            while (cursor.moveToNext()) {
+                noOfComp = cursor.getInt(0);
+            }//while
+        }//else
+    }
 }
+
+// get max no of laps - done
+// get Series name - done
+// using series name get number of competitors - done
+// regex to fix input type
+// display elapsed and corrected in format 00:00:00 - done
+// enter points in database - no clue

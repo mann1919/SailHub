@@ -29,7 +29,6 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
     @Override
     public CompetitorDetailAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.my_row_competitor,parent,false);
-        //return new CompetitorDetailAdapter.MyViewHolder(view);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }

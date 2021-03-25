@@ -1,7 +1,7 @@
 package com.example.sailhub;
 
 public class EditModel {
-    private String etClass,etPY,etSailNo,etHelmName,etCrewName,tvIndex,tvIndexTwo,tvDisplayClass,tvDisplaySailNo,tvDisplayHelmName,etElapsed,etLaps;
+    private String etClass,etPY,etSailNo,etHelmName,etCrewName,tvIndex,tvIndexTwo,tvDisplayClass,tvDisplaySailNo,tvDisplayHelmName,etElapsed,etLaps,tvDisplayPY;
 
 
     public String getEtClassValue() {
@@ -62,6 +62,9 @@ public class EditModel {
 
     public String getTvHelmNameValue() { return tvDisplayHelmName; }
     public void setTvHelmNameValue(String tvDisplayHelmName) { this.tvDisplayHelmName = tvDisplayHelmName; }
+
+    public String getTvPYValue() { return tvDisplayPY; }
+    public void setTvPYValue(String tvDisplayPY) { this.tvDisplayPY = tvDisplayPY; }
 
     public String getEtElapsedValue() { return etElapsed; }
     public void setEtElapsedValue(String etElapsed) {
