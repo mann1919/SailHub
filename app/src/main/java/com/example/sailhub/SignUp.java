@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static com.example.sailhub.PasswordHashing.doHashing;
+
 public class SignUp extends AppCompatActivity {
 
     EditText userId, password, repassword;
@@ -39,8 +41,9 @@ public class SignUp extends AppCompatActivity {
                 else{
                     if(pass.equals(repass)){
                         Boolean checkUser = DB.checkUserId(user);
-                        if(checkUser==false){
-                            Boolean insert = DB.insertUserData(user, pass);
+                        if(checkUser==false){ //change to true
+                            String hpass = doHashing(pass);
+                            Boolean insert = DB.insertUserData(user, hpass);
                             if(insert==true){
                                 Toast.makeText(SignUp.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);

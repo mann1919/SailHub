@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EnterRaceResult extends AppCompatActivity {
 
@@ -25,6 +30,7 @@ public class EnterRaceResult extends AppCompatActivity {
     DBHelper DB;
     public ArrayList<EditModel> CompetitorData;
     int noOfComp;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class EnterRaceResult extends AppCompatActivity {
         //get no_of_competitors
         setSeriesName(sName);
 
-
+        context = this;
 
         addRaceResult = (Button) findViewById(R.id.btnSubmitResult);
 
@@ -73,8 +79,12 @@ public class EnterRaceResult extends AppCompatActivity {
                         TextView bClass = (TextView)rowView.findViewById(R.id.tvDisplayClass);
                         TextView SailNo = (TextView)rowView.findViewById(R.id.tvDisplaySailNo);
                         TextView helmName = (TextView)rowView.findViewById(R.id.tvDisplayHelmName);
-                        TextView PY = (TextView)rowView.findViewById(R.id.tvDisplayPY);
+//                        TextView PY = (TextView)rowView.findViewById(R.id.tvDisplayPY);
                         EditText elapsed = (EditText)rowView.findViewById(R.id.etElapsed);
+
+                        elapsed.setFilters(new InputFilter[] {
+                                new RegexInputFilter(context, "^(?:(?:([01]?d|2[0-3]):)?([0-5]?d):)?([0-5]?d)$")
+                        });
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
 
 
@@ -82,7 +92,7 @@ public class EnterRaceResult extends AppCompatActivity {
                         int cSailNo = Integer.parseInt(SailNo.getText().toString());
                         String cHelmName = helmName.getText().toString();
                         int cLaps = Integer.parseInt(laps.getText().toString());
-                        double cPY = Integer.parseInt(PY.getText().toString());
+                        double cPY = Double.parseDouble(CompetitorData.get(i).getTvPYValue());
                         String tempElapsed = elapsed.getText().toString();
                         String cElapsed = calculateElapsed(tempElapsed,cLaps,maxLaps);
                         String cCorrected =  calculateCorrected(cElapsed,cPY);
@@ -97,7 +107,7 @@ public class EnterRaceResult extends AppCompatActivity {
                     startActivity(intent);
                 }
                 catch (Exception ex) {
-                    Toast.makeText(EnterRaceResult.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EnterRaceResult.this, ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -143,7 +153,10 @@ public class EnterRaceResult extends AppCompatActivity {
         int correctMinutes = remainder1/60;
         int remainder2 = remainder1 - (correctMinutes *60);
         int correctSeconds = remainder2;
-        String elapsedTime = String.valueOf(correctHours) +":"+ String.valueOf(correctMinutes) +":"+ String.valueOf(correctSeconds) ;
+        String finalHours = String.format("%02d", correctHours);
+        String finalMins = String.format("%02d", correctMinutes);
+        String finalSecs = String.format("%02d", correctSeconds);
+        String elapsedTime = finalHours + ":" + finalMins + ":"+ finalSecs;
         return elapsedTime;
     }
 
@@ -192,9 +205,5 @@ public class EnterRaceResult extends AppCompatActivity {
     }
 }
 
-// get max no of laps - done
-// get Series name - done
-// using series name get number of competitors - done
+
 // regex to fix input type
-// display elapsed and corrected in format 00:00:00 - done
-// enter points in database - no clue

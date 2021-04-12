@@ -32,7 +32,6 @@ public class DBHelper extends SQLiteOpenHelper {
         ClubDB.execSQL(sqlSeries);
         ClubDB.execSQL(sqlRace);
         ClubDB.execSQL(sqlRaceRecords);
-        //, FOREIGN KEY (series_name) REFERENCES series(series_name)
     }
 
     @Override
@@ -92,6 +91,19 @@ public class DBHelper extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    public Boolean deleteSeriesData(String series_number) {
+        SQLiteDatabase ClubDB = this.getWritableDatabase();
+
+        String[] args = new String[]{series_number};
+        long result = ClubDB.delete("series","series_number=?" , args);
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
+
+
     public Boolean insertRaceEntries(String series_name) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -115,7 +127,23 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor = ClubDB.rawQuery(qry,null);
         }//if
         return cursor;
-    }//cursor
+    }
+
+    public Cursor readSeriesResult(String seriesName){
+        String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, raceRecords.PY ,SUM (raceRecords.points )  FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id WHERE race.series_name = '"
+                + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name ORDER BY raceRecords.points ASC";
+        SQLiteDatabase ClubDB = this.getReadableDatabase();
+
+        //SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, raceRecords.PY ,raceRecords.points
+        //FROM raceRecords
+        //INNER JOIN race ON raceRecords.race_id=race.race_id;
+
+        Cursor cursor = null;
+        if(ClubDB!= null){
+            cursor = ClubDB.rawQuery(qry,null);
+        }//if
+        return cursor;
+    }
 
     public Cursor getRaceIds(String sName) {
         String qry = "SELECT race_id FROM race WHERE series_name = '" +  sName +"'";

@@ -3,9 +3,11 @@ package com.example.sailhub;
 import androidx.annotation.NonNull;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +20,12 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
     Context context;
     private OnSeriesListener seriesListener;
 
-    public SeriesListAdapter(Context ct, ArrayList data,OnSeriesListener seriesListener){
+    public SeriesListAdapter(Context ct, ArrayList data,OnSeriesListener sListener){
         context = ct;
         this.seriesList =  data;
-        this.seriesListener = seriesListener;
+        seriesListener = sListener;
     }
+
 
     @NonNull
     @Override
@@ -34,8 +37,9 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.sName.setText(String.valueOf(seriesList.get(position)));
-
+        String currentItem = seriesList.get(position);
+        holder.sName.setText(String.valueOf(currentItem));
+        holder.imgDelete.setImageResource(R.drawable.ic_delete);
     }
 
     @Override
@@ -43,26 +47,35 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
         return seriesList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView sName;
+        ImageView imgDelete;
         OnSeriesListener onSeriesListener;
         public MyViewHolder(@NonNull View itemView, OnSeriesListener onSeriesListener){
             super(itemView);
             sName = itemView.findViewById(R.id.tvSeriesName);
+            imgDelete = itemView.findViewById(R.id.imgDelete);
             this.onSeriesListener = onSeriesListener;
-
-            itemView.setOnClickListener(this);
+            sName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSeriesListener.onSeriesClick(getAdapterPosition());
+                }
+            });
+            imgDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSeriesListener.onDeleteClick(getAdapterPosition());
+                }
+            });
         }
-
-
-        @Override
-        public void onClick(View v) {
-            onSeriesListener.onSeriesClick(getAdapterPosition());
-        }
+        
     }
 
     public interface OnSeriesListener{
         void onSeriesClick(int position);
+        void onDeleteClick(int position);
     }
+
 
 }

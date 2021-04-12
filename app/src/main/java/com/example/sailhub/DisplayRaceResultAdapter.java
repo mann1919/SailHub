@@ -94,7 +94,7 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
             String elapsed = cursor.getString(5) == null ? "" : cursor.getString(5);
             int laps = cursor.getString(6) == null ? -1 : Integer.parseInt(cursor.getString(6));
             String corrected = cursor.getString(7) == null ? "" : cursor.getString(7);
-            if(elapsed != null) {
+            if(elapsed != "") {
                 DB.insertPoints(raceId, bClass, sailNo, helmName, rank);
             }
             int points = cursor.getString(8) == null ? -1 : Integer.parseInt(cursor.getString(8));

@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,8 +19,10 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
 
     RecyclerView rvListOfSeries;
     Button addSeries;
+    ImageView imgDelete;
     DBHelper DB;
     ArrayList<String> seriesList;
+    SeriesListAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +31,17 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
         addSeries = (Button) findViewById(R.id.btnAddSeries);
         rvListOfSeries = findViewById(R.id.rvSeriesList);
 
+
         DB = DBHelper.getInstance(this);
         seriesList = new ArrayList<>();
 
-        storeDataInArrays();
+        storeSeriesNameInArray();
 
-        SeriesListAdapter myAdapter = new SeriesListAdapter(this,seriesList, this);
+        myAdapter = new SeriesListAdapter(this,seriesList, this);
 
         rvListOfSeries.setAdapter(myAdapter);
         rvListOfSeries.setLayoutManager(new LinearLayoutManager(this));
+
 
         addSeries.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +53,7 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
 
     }
 
-    void storeDataInArrays() {
+    void storeSeriesNameInArray() {
         Cursor cursor = DB.readSeriesName();
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "No Data.", Toast.LENGTH_SHORT).show();
@@ -59,12 +65,25 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
         }//else
     }
 
+
     @Override
     public void onSeriesClick(int position) {
-        //seriesList.get(position);
         Intent intent = new Intent(ListSeries.this, DisplayRaceResult.class);
         intent.putExtra("nameOfSeries",seriesList.get(position));
 
         startActivity(intent);
     }
+
+    @Override
+    public void onDeleteClick(int position) {
+        removeItem(position);
+    }
+
+    public void removeItem(int position) {
+        String series_number = String.valueOf(myAdapter.getItemId(position));
+        DB.deleteSeriesData(series_number);
+        seriesList.remove(position);
+        myAdapter.notifyItemRemoved(position);
+    }
+
 }

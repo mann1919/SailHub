@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -21,16 +22,28 @@
 
             <TextView
                 android:id="@+id/tvSeriesName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="615dp"
+                android:layout_height="60dp"
                 android:layout_margin="15dp"
                 android:text="Series Name"
                 android:textAlignment="center"
                 android:textSize="45dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgDelete"
+                app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/etSailNo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgDelete"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="32dp"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

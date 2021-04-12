@@ -4,15 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class DisplayRaceResult extends AppCompatActivity {
 
-
     String sName;
     RecyclerView rvRaceList;
     TextView seriesName;
+    Button GenerateResults;
 
 
     @Override
@@ -24,12 +27,22 @@ public class DisplayRaceResult extends AppCompatActivity {
         sName = getIntent().getExtras().getString("nameOfSeries");
         seriesName.setText(sName);
 
+        GenerateResults = (Button) findViewById(R.id.btnGenerateResult);
+
         DisplayRaceResultAdapter myAdapter = new DisplayRaceResultAdapter(this, sName);
 
         rvRaceList = findViewById(R.id.rvRace);
         rvRaceList.setAdapter(myAdapter);
         rvRaceList.setLayoutManager(new LinearLayoutManager(this));
 
+        GenerateResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayRaceResult.this, DisplaySeriesResult.class);
+                intent.putExtra("seriesName",sName);
+                startActivity(intent);
+            }
+        });
 
     }
 }

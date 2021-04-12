@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplaySeriesResult">
+
+    <TextView
+        android:id="@+id/tvSeriesNameFinal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D2C587"
+        android:padding="20dp"
+        android:text="Series Name"
+        android:textAlignment="center"
+        android:textColor="#333232"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <de.codecrafters.tableview.TableView
+        android:id="@+id/finalTable"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeriesNameFinal"
+        app:layout_constraintBottom_toTopOf="@id/btnPrint">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="779dp"
+            android:layout_height="769dp"
+            />
+    </de.codecrafters.tableview.TableView>
+
+    <Button
+        android:id="@+id/btnPrint"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="244dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/custom_button"
+        android:text="Print"
+        android:textAllCaps="false"
+        android:textColor="#333232"
+        android:textSize="30sp"
+        app:backgroundTint="#D2C587"
+        android:onClick="CreatePdf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finalTable"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

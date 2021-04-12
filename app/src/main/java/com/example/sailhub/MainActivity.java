@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.example.sailhub.PasswordHashing.doHashing;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText userId,password;
@@ -20,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
 
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String user = userId.getText().toString();
                 String pass = password.getText().toString();
-
+                String hpass = doHashing(pass);
                 if(user.equals("")||pass.equals(""))
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else{
-                    Boolean checkuserpass = DB.checkUserIdPassword(user, pass);
+                    Boolean checkuserpass = DB.checkUserIdPassword(user, hpass);
                     if(checkuserpass==true){
                         Toast.makeText(MainActivity.this, "Sign in successfull", Toast.LENGTH_SHORT).show();
                         Intent intent  = new Intent(getApplicationContext(), ListSeries.class);

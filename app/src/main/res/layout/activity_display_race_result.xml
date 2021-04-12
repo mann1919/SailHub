@@ -22,13 +22,26 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRace"
-            android:layout_width="match_parent"
-            android:layout_height="700dp"
+            android:layout_width="770dp"
+            android:layout_height="600dp"
             android:layout_marginTop="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNameOfSeries" />
 
+        <Button
+            android:id="@+id/btnGenerateResult"
+            android:layout_width="wrap_content"
+            android:layout_height="68dp"
+            android:background="@drawable/custom_button"
+            android:text="Generate Results"
+            android:textAllCaps="false"
+            android:textColor="#333232"
+            android:textSize="30sp"
+            app:backgroundTint="#D2C587"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvRace" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

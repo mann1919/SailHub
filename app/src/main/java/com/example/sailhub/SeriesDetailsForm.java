@@ -31,42 +31,47 @@ public class SeriesDetailsForm extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sName = seriesName.getText().toString();
-                int sNoOfRaces = Integer.parseInt(noOfRaces.getText().toString());
-                int sNoOfCompetitors = Integer.parseInt(noOfCompetitors.getText().toString());
+                try {
+                    String sName = seriesName.getText().toString();
+                    int sNoOfCompetitors = noOfCompetitors.getText().toString() == "" ? 0 : Integer.parseInt(noOfCompetitors.getText().toString());
+                    int sNoOfRaces = noOfRaces.getText().toString() == "" ? 0 : Integer.parseInt(noOfRaces.getText().toString());
 
-                if(sName.equals("")){
-                    Toast.makeText(SeriesDetailsForm.this, "Please enter series name", Toast.LENGTH_SHORT).show();
-                    return;
-                }//if
-
-                if(sNoOfRaces==0){
-                    Toast.makeText(SeriesDetailsForm.this, "Number of races cannot be 0", Toast.LENGTH_SHORT).show();
-                    return;
-                }//if
-                if(sNoOfCompetitors==0){
-                    Toast.makeText(SeriesDetailsForm.this, "Number of competitors cannot be 0", Toast.LENGTH_SHORT).show();
-                    return;
-                }//if
-
-                Boolean checkInsertData = DB.insertSeriesData(sName, sNoOfRaces, sNoOfCompetitors);
-
-                for(int i = 0; i < sNoOfRaces; i++) {
-                    Boolean checkRaceData = DB.insertRaceEntries(sName);
-                    if(!checkRaceData){
-                        Toast.makeText(SeriesDetailsForm.this, "Error please try again", Toast.LENGTH_SHORT).show();
+                    if (sName.equals("")) {
+                        Toast.makeText(SeriesDetailsForm.this, "Please enter series name", Toast.LENGTH_SHORT).show();
                         return;
                     }//if
+
+                    else if (sNoOfRaces == 0) {
+                        Toast.makeText(SeriesDetailsForm.this, "Please enter number of races", Toast.LENGTH_SHORT).show();
+                        return;
+                    }//if
+                    else if (sNoOfCompetitors == 0) {
+                        Toast.makeText(SeriesDetailsForm.this, "Please enter number of competitors", Toast.LENGTH_SHORT).show();
+                        return;
+                    }//if
+
+                    Boolean checkInsertData = DB.insertSeriesData(sName, sNoOfRaces, sNoOfCompetitors);
+
+                    for (int i = 0; i < sNoOfRaces; i++) {
+                        Boolean checkRaceData = DB.insertRaceEntries(sName);
+                        if (!checkRaceData) {
+                            Toast.makeText(SeriesDetailsForm.this, "Error please try again", Toast.LENGTH_SHORT).show();
+                            return;
+                        }//if
+                    }
+                    if (checkInsertData) {
+                        Toast.makeText(SeriesDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), CompetitorDetailsForm.class);
+                        intent.putExtra("value", sName);
+                        intent.putExtra("compNo", sNoOfCompetitors);
+                        startActivity(intent);
+                    }//if
+                    else
+                        Toast.makeText(SeriesDetailsForm.this, "New Entry Not Inserted, try again", Toast.LENGTH_SHORT).show();
+                    return;
+                }catch (Exception ex) {
+                    Toast.makeText(SeriesDetailsForm.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                if(checkInsertData) {
-                    Toast.makeText(SeriesDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), CompetitorDetailsForm.class);
-                    intent.putExtra("value",sName);
-                    intent.putExtra("compNo",sNoOfCompetitors);
-                    startActivity(intent);
-                }//if
-                else
-                    Toast.makeText(SeriesDetailsForm.this, "New Entry Not Inserted, try again", Toast.LENGTH_SHORT).show();
 
             }
         });

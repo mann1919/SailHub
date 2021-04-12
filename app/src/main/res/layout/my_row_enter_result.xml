@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -21,33 +22,31 @@
 
             <TextView
                 android:id="@+id/tvIndexTwo"
-                android:layout_width="0dp"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="1"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvDisplayClass"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
+                android:hint="Class"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:hint="Class"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/tvIndexTwo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvDisplaySailNo"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:inputType="number"
@@ -55,13 +54,12 @@
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/tvDisplayClass"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvDisplayHelmName"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:inputType="number"
@@ -69,48 +67,45 @@
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/tvDisplaySailNo"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvDisplayPY"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:inputType="number"
-                android:hint="PY"
-                android:textAlignment="center"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/tvDisplayHelmName"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvDisplayPY"-->
+<!--                android:layout_width="75dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="15dp"-->
+<!--                android:inputType="number"-->
+<!--                android:hint="PY"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textSize="20dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/tvDisplayHelmName"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <EditText
                 android:id="@+id/etElapsed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="178dp"
+                android:layout_height="52dp"
                 android:layout_margin="15dp"
                 android:hint="Enter hh:mm:ss"
                 android:inputType="time"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/tvDisplayPY"
+                app:layout_constraintStart_toEndOf="@+id/tvDisplayHelmName"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/etLaps"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="142dp"
+                android:layout_height="52dp"
+                android:layout_margin="15dp"
                 android:hint="Enter laps"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:layout_margin="15dp"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/etElapsed"
                 app:layout_constraintTop_toTopOf="parent" />
 

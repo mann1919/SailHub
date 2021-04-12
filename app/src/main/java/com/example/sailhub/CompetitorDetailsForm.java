@@ -72,7 +72,6 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                                 Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
                                 return;
                             }//if
-
                             else if(PY.length()==0){
                                 Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
                                 return;
