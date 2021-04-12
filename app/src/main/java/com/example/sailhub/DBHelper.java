@@ -85,6 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("series_name", series_name);
         contentValues.put("no_of_races", no_of_races);
         contentValues.put("no_of_competitors", no_of_competitors);
+
         long result = ClubDB.insert("series", null, contentValues);
         if (result == -1)
             return false;
@@ -92,11 +93,11 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public Boolean deleteSeriesData(String series_number) {
+    public Boolean deleteSeriesData(String series_name) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
 
-        String[] args = new String[]{series_number};
-        long result = ClubDB.delete("series","series_number=?" , args);
+        String[] args = new String[]{series_name};
+        long result = ClubDB.delete("series","series_name=?" , args);
         if (result == -1)
             return false;
         else
@@ -131,7 +132,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor readSeriesResult(String seriesName){
         String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, raceRecords.PY ,SUM (raceRecords.points )  FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id WHERE race.series_name = '"
-                + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name ORDER BY raceRecords.points ASC";
+                + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name ORDER BY SUM(raceRecords.points) ASC";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         //SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, raceRecords.PY ,raceRecords.points
@@ -198,6 +199,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }//if
         return cursor;
     }//cursor
+
 
     public Boolean insertCompetitorData(int race_id, String Class, int PY, int sail_no, String helm_name, String crew_name) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();

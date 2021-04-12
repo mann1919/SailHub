@@ -1,7 +1,10 @@
 package com.example.sailhub;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -116,7 +120,7 @@ public class DisplaySeriesResult extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void CreatePdf(View view) throws IOException {
         String dir = Environment.getExternalStorageDirectory() + "/Documents/";
-        String filePath = new File(dir, "result_" + System.currentTimeMillis() + ".pdf").toString();
+        String filePath = new File(dir, sName + "_result" + System.currentTimeMillis() + ".pdf").toString();
         new File(filePath).createNewFile();
 
         FileOutputStream fOut = new FileOutputStream(filePath);
@@ -128,6 +132,7 @@ public class DisplaySeriesResult extends AppCompatActivity {
         document.add(new Paragraph(sName)
                 .setBold()
                 .setUnderline()
+                .setFontSize(30)
                 .setTextAlignment(TextAlignment.CENTER));
         document.add(new Paragraph(" "));
 
@@ -150,6 +155,5 @@ public class DisplaySeriesResult extends AppCompatActivity {
 
         document.close();
     }
-
 
 }

@@ -19,7 +19,6 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
 
     RecyclerView rvListOfSeries;
     Button addSeries;
-    ImageView imgDelete;
     DBHelper DB;
     ArrayList<String> seriesList;
     SeriesListAdapter myAdapter;
@@ -80,8 +79,8 @@ public class ListSeries extends AppCompatActivity implements SeriesListAdapter.O
     }
 
     public void removeItem(int position) {
-        String series_number = String.valueOf(myAdapter.getItemId(position));
-        DB.deleteSeriesData(series_number);
+        String series_name = seriesList.get(position);
+        DB.deleteSeriesData(series_name);
         seriesList.remove(position);
         myAdapter.notifyItemRemoved(position);
     }
