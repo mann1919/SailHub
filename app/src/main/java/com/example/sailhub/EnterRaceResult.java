@@ -62,6 +62,9 @@ public class EnterRaceResult extends AppCompatActivity {
         rvEnterResult.setAdapter(myAdapter);
         rvEnterResult.setLayoutManager(new LinearLayoutManager(this));
 
+        Toast.makeText(EnterRaceResult.this, "Fill in elapsed and laps", Toast.LENGTH_SHORT).show();
+
+
         addRaceResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -20,6 +20,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
     TextView seriesName;
     Button addCompetitor;
     int noOfComp;
+    int sNoOfRaces;
     RecyclerView rvCompetitors;
     DBHelper DB;
     public ArrayList<EditModel> editModelArrayList;
@@ -29,10 +30,13 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_competitor_details_form);
 
+        Toast.makeText(CompetitorDetailsForm.this, "Fill in competitor details", Toast.LENGTH_SHORT).show();
         //get series name
         seriesName = findViewById(R.id.tvSeriesName);
         sName = getIntent().getExtras().getString("value");
         seriesName.setText(sName);
+
+        sNoOfRaces = getIntent().getExtras().getInt("raceNo");
 
         DB = DBHelper.getInstance(this);
         raceIds = new ArrayList<>();
@@ -49,6 +53,15 @@ public class CompetitorDetailsForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    DB.insertSeriesData(sName, sNoOfRaces, noOfComp);
+                    for (int i = 0; i < sNoOfRaces; i++) {
+                        Boolean checkRaceData = DB.insertRaceEntries(sName);
+                        if (!checkRaceData) {
+                            Toast.makeText(CompetitorDetailsForm.this, "Enter Series details again", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), SeriesDetailsForm.class);
+                            startActivity(intent);
+                        }//if
+                    }
                     getRId(sName);
 
                     for (int raceId : raceIds) {
@@ -98,7 +111,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                         }
                     }
 
-                    Toast.makeText(CompetitorDetailsForm.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CompetitorDetailsForm.this, "Series created with competitors", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), ListSeries.class);
                     startActivity(intent);
                 }
