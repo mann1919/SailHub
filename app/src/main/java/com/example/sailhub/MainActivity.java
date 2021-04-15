@@ -37,16 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
                 String user = userId.getText().toString();
                 String pass = password.getText().toString();
-                String hpass = doHashing(pass);
+                String hPassword = doHashing(pass);
                 if(user.equals("")||pass.equals(""))
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else{
-                    Boolean checkuserpass = DB.checkUserIdPassword(user, hpass);
-                    if(checkuserpass==true){
-                        Toast.makeText(MainActivity.this, "Sign in successfull", Toast.LENGTH_SHORT).show();
+                    Boolean checkUserPass = DB.checkUserIdPassword(user, hPassword);
+                    Boolean checkUser = DB.checkUserId(user);
+                    if(checkUserPass){
+                        Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
                         Intent intent  = new Intent(getApplicationContext(), ListSeries.class);
                         startActivity(intent);
-                    }else{
+                    }
+                    else if(checkUser){
+                        Toast.makeText(MainActivity.this, "Please register with this ID", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
                         Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     }
                 }

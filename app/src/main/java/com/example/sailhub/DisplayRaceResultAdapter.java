@@ -94,10 +94,11 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
             String elapsed = cursor.getString(5) == null ? "" : cursor.getString(5);
             int laps = cursor.getString(6) == null ? -1 : Integer.parseInt(cursor.getString(6));
             String corrected = cursor.getString(7) == null ? "" : cursor.getString(7);
+            int points = cursor.getString(8) == null ? -1 : Integer.parseInt(cursor.getString(8));
             if(elapsed != "") {
                 DB.insertPoints(raceId, bClass, sailNo, helmName, rank);
             }
-            int points = cursor.getString(8) == null ? -1 : Integer.parseInt(cursor.getString(8));
+
 
             rankCount++;
             CompetitorData competitor = new CompetitorData(rank, bClass, sailNo, helmName, crewName, PY, elapsed, laps, corrected, points);
@@ -111,11 +112,11 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
             records[i][1] = s.getBoatClass();
             records[i][2] = String.valueOf(s.getSailNo());
             records[i][3] = s.getHelmName();
-            records[i][4] = s.getCrewName() == "" ? "--" : s.getCrewName();
+            records[i][4] = s.getCrewName().equals("") ? "--" : s.getCrewName();
             records[i][5] = String.valueOf(s.getPY());
-            records[i][6] = s.getElapsed() == "" ? "--" : s.getElapsed();
+            records[i][6] = s.getElapsed().equals("") ? "--" : s.getElapsed();
             records[i][7] = s.getLaps() == -1 ? "--" : String.valueOf(s.getLaps());
-            records[i][8] = s.getCorrected() == "" ? "--" : s.getCorrected();
+            records[i][8] = s.getCorrected().equals("") ? "--" : s.getCorrected();
             records[i][9] = s.getPoints() == -1 ? "--" : String.valueOf(s.getPoints());
         }//for
 

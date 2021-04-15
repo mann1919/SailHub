@@ -30,21 +30,27 @@
         app:layout_constraintTop_toBottomOf="@+id/tvSeriesNameFinal"
         app:layout_constraintBottom_toTopOf="@id/btnPrint">
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="779dp"
-            android:layout_height="769dp"
-            />
     </de.codecrafters.tableview.TableView>
+
+    <ImageView
+        android:id="@+id/imgHome"
+        android:layout_width="85dp"
+        android:layout_height="71dp"
+        android:src="@drawable/ic_home"
+        android:layout_marginTop="69dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toEndOf="@+id/btnPrint"
+        app:layout_constraintTop_toBottomOf="@+id/finalTable" />
 
     <Button
         android:id="@+id/btnPrint"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-        android:layout_width="244dp"
+        android:layout_width="265dp"
         android:layout_height="71dp"
         android:layout_marginTop="68dp"
         android:background="@drawable/custom_button"
-        android:text="Print"
+        android:text="Create PDF"
         android:textAllCaps="false"
         android:textColor="#333232"
         android:textSize="30sp"

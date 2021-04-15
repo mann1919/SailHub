@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,21 +46,27 @@ public class DisplaySeriesResult extends AppCompatActivity {
     TextView nameOfSeries;
     Button Print;
     DBHelper DB;
-    WebView webView;
+    ImageView imgHome;
     public ArrayList<Integer> raceIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_series_result);
-        webView=findViewById(R.id.webView);
         Print = (Button) findViewById(R.id.btnPrint);
-
 
         nameOfSeries = findViewById(R.id.tvSeriesNameFinal);
         sName = getIntent().getExtras().getString("seriesName");
         nameOfSeries.setText(sName);
 
+        imgHome = findViewById(R.id.imgHome);
+        imgHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplaySeriesResult.this, ListSeries.class);
+                startActivity(intent);
+            }
+        });
 
         DB = DBHelper.getInstance(this);
         raceIds = new ArrayList<>();
@@ -108,7 +115,7 @@ public class DisplaySeriesResult extends AppCompatActivity {
                 records[i][1] = s.getBoatClass();
                 records[i][2] = String.valueOf(s.getSailNo());
                 records[i][3] = s.getHelmName();
-                records[i][4] = s.getCrewName() == "" ? "--" : s.getCrewName();
+                records[i][4] = s.getCrewName().equals("") ? "--" : s.getCrewName();
                 records[i][5] = String.valueOf(s.getPY());
                 records[i][6] = s.getPoints() == -1 ? "--" : String.valueOf(s.getPoints());
             }//for
@@ -121,7 +128,8 @@ public class DisplaySeriesResult extends AppCompatActivity {
     public void CreatePdf(View view) throws IOException {
         String dir = Environment.getExternalStorageDirectory() + "/Documents/";
         String filePath = new File(dir, sName + "_result" + System.currentTimeMillis() + ".pdf").toString();
-        new File(filePath).createNewFile();
+        File pdfFile = new File(filePath);
+        pdfFile.createNewFile();
 
         FileOutputStream fOut = new FileOutputStream(filePath);
         PdfWriter pdfWriter = new PdfWriter(fOut);
@@ -152,8 +160,8 @@ public class DisplaySeriesResult extends AppCompatActivity {
         }
 
         document.add(table);
-
         document.close();
+        Toast.makeText(DisplaySeriesResult.this, "PDF created, check Documents!!", Toast.LENGTH_LONG).show();
     }
 
 }

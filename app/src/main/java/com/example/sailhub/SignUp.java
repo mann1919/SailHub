@@ -41,10 +41,10 @@ public class SignUp extends AppCompatActivity {
                 else{
                     if(pass.equals(repass)){
                         Boolean checkUser = DB.checkUserId(user);
-                        if(checkUser==false){ //change to true
+                        if(checkUser){
                             String hpass = doHashing(pass);
                             Boolean insert = DB.insertUserData(user, hpass);
-                            if(insert==true){
+                            if(insert){
                                 Toast.makeText(SignUp.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
@@ -53,9 +53,8 @@ public class SignUp extends AppCompatActivity {
                             }
                         }
                         else{
-                            Toast.makeText(SignUp.this, "User already exists! please sign in", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(intent);
+                            Toast.makeText(SignUp.this, "Incorrect User ID", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }else{
                         Toast.makeText(SignUp.this, "Passwords not matching", Toast.LENGTH_SHORT).show();

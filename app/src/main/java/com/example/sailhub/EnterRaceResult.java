@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,8 @@ public class EnterRaceResult extends AppCompatActivity {
     public ArrayList<EditModel> CompetitorData;
     int noOfComp;
     Context context;
+
+    private static final String ELAPSED_PATTERN = "(?:[01]\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,10 @@ public class EnterRaceResult extends AppCompatActivity {
                     for (int i = 0; i < noOfComp; i++) {
                         View rowView = rvEnterResult.getChildAt(i);
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
+                        if (laps.getText().toString().equals("")) {
+                            Toast.makeText(EnterRaceResult.this, "Enter laps", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         int cLaps = Integer.parseInt(laps.getText().toString());
                         if (cLaps > maxLaps)
                             maxLaps = cLaps;
@@ -79,12 +86,7 @@ public class EnterRaceResult extends AppCompatActivity {
                         TextView bClass = (TextView)rowView.findViewById(R.id.tvDisplayClass);
                         TextView SailNo = (TextView)rowView.findViewById(R.id.tvDisplaySailNo);
                         TextView helmName = (TextView)rowView.findViewById(R.id.tvDisplayHelmName);
-//                        TextView PY = (TextView)rowView.findViewById(R.id.tvDisplayPY);
                         EditText elapsed = (EditText)rowView.findViewById(R.id.etElapsed);
-
-                        elapsed.setFilters(new InputFilter[] {
-                                new RegexInputFilter(context, "^(?:(?:([01]?d|2[0-3]):)?([0-5]?d):)?([0-5]?d)$")
-                        });
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
 
 
@@ -94,8 +96,15 @@ public class EnterRaceResult extends AppCompatActivity {
                         int cLaps = Integer.parseInt(laps.getText().toString());
                         double cPY = Double.parseDouble(CompetitorData.get(i).getTvPYValue());
                         String tempElapsed = elapsed.getText().toString();
+
+                        if (!tempElapsed.matches(ELAPSED_PATTERN)) {
+                            throw new Exception("Enter Elapsed in the format HH:MM:SS");
+                        }//if
+
                         String cElapsed = calculateElapsed(tempElapsed,cLaps,maxLaps);
+
                         String cCorrected =  calculateCorrected(cElapsed,cPY);
+
                         Boolean checkInsertData = DB.insertRaceData(raceId, cClass, cSailNo, cHelmName, cElapsed, cLaps,cCorrected);
 
                         if (!checkInsertData)
@@ -107,7 +116,7 @@ public class EnterRaceResult extends AppCompatActivity {
                     startActivity(intent);
                 }
                 catch (Exception ex) {
-                    Toast.makeText(EnterRaceResult.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EnterRaceResult.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -204,6 +213,3 @@ public class EnterRaceResult extends AppCompatActivity {
         }//else
     }
 }
-
-
-// regex to fix input type

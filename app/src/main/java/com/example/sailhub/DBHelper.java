@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase ClubDB) {
-        String sqlUsers = "create Table users (userId INTEGER PRIMARY KEY, password TEXT)";
+        String sqlUsers = "create Table users (user_id INTEGER PRIMARY KEY, password TEXT)";
         String sqlSeries = "create Table series (series_number INTEGER , series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
         String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT , FOREIGN KEY (series_name) REFERENCES series(series_name))";
         String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, sail_no INTEGER, helm_name TEXT, crew_name TEXT, PY INTEGER, elapsed TEXT, laps INTEGER, corrected TEXT, points INTEGER)";
@@ -32,6 +32,11 @@ public class DBHelper extends SQLiteOpenHelper {
         ClubDB.execSQL(sqlSeries);
         ClubDB.execSQL(sqlRace);
         ClubDB.execSQL(sqlRaceRecords);
+
+        String insertUser1 = "INSERT INTO users (user_id) VALUES ('777')";
+        ClubDB.execSQL(insertUser1);
+        String insertUser2 = "INSERT INTO users (user_id) VALUES ('999')";
+        ClubDB.execSQL(insertUser2);
     }
 
     @Override
@@ -51,19 +56,19 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean insertUserData(String userId, String password) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("userId", userId);
         contentValues.put("password", password);
-        long result = ClubDB.insert("users", null, contentValues);
+        String[] args = new String[]{userId};
+        long result = ClubDB.update("users", contentValues, "user_id=?" , args) ;
         if (result == -1)
             return false;
         else
             return true;
     }
 
-
     public Boolean checkUserId(String userId) {
-        SQLiteDatabase ClubDB = this.getWritableDatabase();
-        Cursor cursor = ClubDB.rawQuery("Select * from users where userId = ?", new String[]{userId});
+        SQLiteDatabase ClubDB = this.getReadableDatabase();
+        String[] args = new String[]{userId};
+        Cursor cursor = ClubDB.rawQuery("Select user_id from users where user_id=? AND password IS NULL", args);
         if (cursor.getCount() > 0)
             return true;
         else
@@ -72,7 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Boolean checkUserIdPassword(String userId, String password) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
-        Cursor cursor = ClubDB.rawQuery("Select * from users where userId = ? and password = ?", new String[]{userId, password});
+        Cursor cursor = ClubDB.rawQuery("Select * from users where user_id = ? and password = ?", new String[]{userId, password});
         if (cursor.getCount() > 0)
             return true;
         else
@@ -210,6 +215,21 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("sail_no", sail_no);
         contentValues.put("helm_name", helm_name);
         contentValues.put("crew_name", crew_name);
+        long result = ClubDB.insert("raceRecords", null, contentValues) ;
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public Boolean insertCompetitorDataNoCrew(int race_id, String Class, int PY, int sail_no, String helm_name) {
+        SQLiteDatabase ClubDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("race_id", race_id);
+        contentValues.put("Class", Class);
+        contentValues.put("PY", PY);
+        contentValues.put("sail_no", sail_no);
+        contentValues.put("helm_name", helm_name);
         long result = ClubDB.insert("raceRecords", null, contentValues) ;
         if (result == -1)
             return false;

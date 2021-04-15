@@ -45,7 +45,6 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         rvCompetitors = findViewById(R.id.rvCompetitors);
         rvCompetitors.setAdapter(myAdapter);
         rvCompetitors.setLayoutManager(new LinearLayoutManager(this));
-
         addCompetitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,20 +63,20 @@ public class CompetitorDetailsForm extends AppCompatActivity {
 
 
                             String cClass = bClass.getText().toString();
-                            int cPY = Integer.parseInt(PY.getText().toString());
-                            int cSailNo = Integer.parseInt(sailNo.getText().toString());
+                            int cPY = PY.getText().toString().equals("") ? 0 : Integer.parseInt(PY.getText().toString());
+                            int cSailNo = sailNo.getText().toString().equals("") ? 0 : Integer.parseInt(sailNo.getText().toString());
                             String cHelmName = helmName.getText().toString();
                             String cCrewName = crewName.getText().toString();
                             if(cClass.equals("")){
                                 Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
                                 return;
                             }//if
-                            else if(PY.length()==0){
+                            else if(cPY == 0){
                                 Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
                                 return;
                             }//if
-                            else if(sailNo.length()==0){
-                                Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
+                            else if(cSailNo == 0){
+                                Toast.makeText(CompetitorDetailsForm.this, "Enter SailNo", Toast.LENGTH_SHORT).show();
                                 return;
                             }//if
                             else if(cHelmName.equals("")){
@@ -85,7 +84,13 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                                 return;
                             }//if
 
-                            Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
+                            Boolean checkInsertData;
+                            if(cCrewName.equals("")) {
+                                checkInsertData = DB.insertCompetitorDataNoCrew(raceId, cClass, cPY, cSailNo, cHelmName);
+                            }
+                            else{
+                                checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
+                            }
 
                             if (!checkInsertData)
                                 throw new Exception("Error while inserting new entry");
