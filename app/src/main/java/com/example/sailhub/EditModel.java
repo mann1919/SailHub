@@ -2,6 +2,7 @@ package com.example.sailhub;
 
 /*
 This class is used to save data even when scrolled in recycler view
+adopted from: https://demonuts.com/android-recyclerview-with-edittext/
  */
 public class EditModel {
     private String etClass,etPY,etSailNo,etHelmName,etCrewName,tvIndex,tvIndexTwo,tvDisplayClass,tvDisplaySailNo,tvDisplayHelmName,etElapsed,etLaps,tvDisplayPY;
