@@ -15,7 +15,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/*
+This class creates the form to take input for the competitors details
+ */
 public class CompetitorDetailsForm extends AppCompatActivity {
+
+    // declaring variables
     String sName;
     TextView seriesName;
     Button addCompetitor;
@@ -23,36 +28,45 @@ public class CompetitorDetailsForm extends AppCompatActivity {
     int sNoOfRaces;
     RecyclerView rvCompetitors;
     DBHelper DB;
-    public ArrayList<EditModel> editModelArrayList;
+    public ArrayList<EditModel> competitorList;
     public ArrayList<Integer> raceIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_competitor_details_form);
 
+        // inform users to fill data
         Toast.makeText(CompetitorDetailsForm.this, "Fill in competitor details", Toast.LENGTH_SHORT).show();
         //get series name
         seriesName = findViewById(R.id.tvSeriesName);
         sName = getIntent().getExtras().getString("value");
         seriesName.setText(sName);
 
+        // get no of races
         sNoOfRaces = getIntent().getExtras().getInt("raceNo");
 
+        // get instance of DB
         DB = DBHelper.getInstance(this);
+
         raceIds = new ArrayList<>();
 
+        // populate competitor list
+        competitorList = populateList();
+        // create object of the adapter
+        CompetitorDetailAdapter myAdapter = new CompetitorDetailAdapter(this,competitorList);
+
+        // link variable to XML object
         addCompetitor = (Button) findViewById(R.id.btnAddCompetitors);
-
-        editModelArrayList = populateList();
-        CompetitorDetailAdapter myAdapter = new CompetitorDetailAdapter(this,editModelArrayList);
-
         rvCompetitors = findViewById(R.id.rvCompetitors);
         rvCompetitors.setAdapter(myAdapter);
         rvCompetitors.setLayoutManager(new LinearLayoutManager(this));
+
+        // onClick listener for button
         addCompetitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    // insert series details
                     DB.insertSeriesData(sName, sNoOfRaces, noOfComp);
                     for (int i = 0; i < sNoOfRaces; i++) {
                         Boolean checkRaceData = DB.insertRaceEntries(sName);
@@ -62,11 +76,13 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                             startActivity(intent);
                         }//if
                     }
+                    // get all race ids for the series
                     getRId(sName);
 
                     for (int raceId : raceIds) {
                         for (int i = 0; i < noOfComp; i++) {
 
+                            // link variable to XML object
                             View rowView = rvCompetitors.getChildAt(i);
                             EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
                             EditText PY = (EditText)rowView.findViewById(R.id.etPY);
@@ -75,11 +91,13 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                             EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
 
 
+                            // get value from edit text
                             String cClass = bClass.getText().toString();
                             int cPY = PY.getText().toString().equals("") ? 0 : Integer.parseInt(PY.getText().toString());
                             int cSailNo = sailNo.getText().toString().equals("") ? 0 : Integer.parseInt(sailNo.getText().toString());
                             String cHelmName = helmName.getText().toString();
                             String cCrewName = crewName.getText().toString();
+                            // validation for input
                             if(cClass.equals("")){
                                 Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
                                 return;
@@ -97,7 +115,9 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                                 return;
                             }//if
 
+
                             Boolean checkInsertData;
+                            // entering data based on crew entered or no
                             if(cCrewName.equals("")) {
                                 checkInsertData = DB.insertCompetitorDataNoCrew(raceId, cClass, cPY, cSailNo, cHelmName);
                             }
@@ -105,12 +125,14 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                                 checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
                             }
 
+                            // catch error
                             if (!checkInsertData)
                                 throw new Exception("Error while inserting new entry");
 
                         }
                     }
 
+                    // toast to inform users about task completion
                     Toast.makeText(CompetitorDetailsForm.this, "Series created with competitors", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), ListSeries.class);
                     startActivity(intent);
@@ -124,6 +146,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
 
     }
 
+    // method to get all race ids for the series name given
     void getRId(String sName) {
 
         Cursor cursor = DB.getRaceIds(sName);
@@ -136,6 +159,8 @@ public class CompetitorDetailsForm extends AppCompatActivity {
             }//while
         }//else
     }
+
+    // populate the competitors list
     private ArrayList<EditModel> populateList(){
 
         ArrayList<EditModel> list = new ArrayList<>();

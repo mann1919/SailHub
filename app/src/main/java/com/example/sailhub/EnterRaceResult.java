@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+this class is used to take user input for
+elaped time and laps for each competitor
+ */
 public class EnterRaceResult extends AppCompatActivity {
 
     String sName;
@@ -33,6 +37,7 @@ public class EnterRaceResult extends AppCompatActivity {
     int noOfComp;
     Context context;
 
+    // pattern to filter elaped input
     private static final String ELAPSED_PATTERN = "(?:[01]\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)";
 
     @Override
@@ -40,37 +45,42 @@ public class EnterRaceResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_race_result);
 
+        // get instance of DB
         DB = DBHelper.getInstance(this);
 
+        // get race id
         Bundle extras=getIntent().getExtras();
         raceId = extras.getInt("raceId");;
-        //get series name
+        //get and set series name
         seriesName = findViewById(R.id.tvSeriesNameTwo);
         setSeriesName(raceId);
         seriesName.setText(sName);
-        //get no_of_competitors
-        setSeriesName(sName);
+        //set no_of_competitors
+        setNoOFCompetitors(sName);
 
         context = this;
 
-        addRaceResult = (Button) findViewById(R.id.btnSubmitResult);
-
+        // populate competitors list
         CompetitorData = populateList();
+        // create adapter object
         EnterRaceResultAdapter myAdapter = new EnterRaceResultAdapter(this,CompetitorData);
 
+        // link variable to XML
+        addRaceResult = (Button) findViewById(R.id.btnSubmitResult);
         rvEnterResult = findViewById(R.id.rvEnterResult);
         rvEnterResult.setAdapter(myAdapter);
         rvEnterResult.setLayoutManager(new LinearLayoutManager(this));
 
         Toast.makeText(EnterRaceResult.this, "Fill in elapsed and laps", Toast.LENGTH_SHORT).show();
 
-
+        // onclick listener for submitting details
         addRaceResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     int maxLaps = 0;
 
+                    //calculate max laps
                     for (int i = 0; i < noOfComp; i++) {
                         View rowView = rvEnterResult.getChildAt(i);
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
@@ -85,6 +95,7 @@ public class EnterRaceResult extends AppCompatActivity {
 
                     for (int i = 0; i < noOfComp; i++) {
 
+                        // link variable to XML object
                         View rowView = rvEnterResult.getChildAt(i);
                         TextView bClass = (TextView)rowView.findViewById(R.id.tvDisplayClass);
                         TextView SailNo = (TextView)rowView.findViewById(R.id.tvDisplaySailNo);
@@ -92,7 +103,7 @@ public class EnterRaceResult extends AppCompatActivity {
                         EditText elapsed = (EditText)rowView.findViewById(R.id.etElapsed);
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
 
-
+                        // get values form edit text
                         String cClass = bClass.getText().toString();
                         int cSailNo = Integer.parseInt(SailNo.getText().toString());
                         String cHelmName = helmName.getText().toString();
@@ -100,6 +111,7 @@ public class EnterRaceResult extends AppCompatActivity {
                         double cPY = Double.parseDouble(CompetitorData.get(i).getTvPYValue());
                         String tempElapsed = elapsed.getText().toString();
 
+                        // pattern check for elapsed
                         if (!tempElapsed.matches(ELAPSED_PATTERN)) {
                             throw new Exception("Enter Elapsed in the format HH:MM:SS");
                         }//if
@@ -127,7 +139,7 @@ public class EnterRaceResult extends AppCompatActivity {
 
     }
 
-
+// method to populate competitors list
     private ArrayList<EditModel> populateList(){
 
         ArrayList<EditModel> list = new ArrayList<>();
@@ -152,7 +164,7 @@ public class EnterRaceResult extends AppCompatActivity {
         return list;
     }
 
-
+    // method to calculate elapsed time
     private String calculateElapsed(String elapsed, int laps,int maxLaps){
 
         String[] elapsedTokens = elapsed.split(":");
@@ -172,6 +184,7 @@ public class EnterRaceResult extends AppCompatActivity {
         return elapsedTime;
     }
 
+    // method toc calculate corrected time
     private String calculateCorrected(String elapsed, double PY){
 
         String[] elapsedTokens = elapsed.split(":");
@@ -192,6 +205,7 @@ public class EnterRaceResult extends AppCompatActivity {
         return correctedTime;
     }
 
+    // set series name
     void setSeriesName(int raceId) {
         Cursor cursor = DB.getSeriesName(raceId);
         if (cursor.getCount() == 0) {
@@ -204,7 +218,8 @@ public class EnterRaceResult extends AppCompatActivity {
         }//else
     }
 
-    void setSeriesName(String sName) {
+    // set no of competitors
+    void setNoOFCompetitors(String sName) {
         Cursor cursor = DB.getNoOfCompetitors(sName);
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "No Data.", Toast.LENGTH_SHORT).show();

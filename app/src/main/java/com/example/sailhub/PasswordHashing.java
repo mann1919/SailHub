@@ -2,7 +2,9 @@ package com.example.sailhub;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+/*
+Password hashing using SHA-256
+ */
 public class PasswordHashing{
 
     public static String doHashing (String password) {

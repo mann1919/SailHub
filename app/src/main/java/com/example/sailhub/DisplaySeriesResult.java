@@ -1,15 +1,12 @@
 package com.example.sailhub;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,22 +21,24 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.UnitValue;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
-
+/*
+this class is used to display series result
+ */
 public class DisplaySeriesResult extends AppCompatActivity {
 
+    // column names
     String[] columnHeaders={"Rank","Class","SailNo","Helm","Crew","PY","Points"};
+    // competitor list
     ArrayList<FinalCompetitorData> competitorsList;
     String[][] records;
     String sName;
@@ -53,13 +52,17 @@ public class DisplaySeriesResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_series_result);
-        Print = (Button) findViewById(R.id.btnPrint);
 
+        // get and set series name
         nameOfSeries = findViewById(R.id.tvSeriesNameFinal);
         sName = getIntent().getExtras().getString("seriesName");
         nameOfSeries.setText(sName);
 
+        // link variable to XML object
+        Print = (Button) findViewById(R.id.btnPrint);
         imgHome = findViewById(R.id.imgHome);
+
+        // home image onclick listener
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,17 +71,19 @@ public class DisplaySeriesResult extends AppCompatActivity {
             }
         });
 
+        // get instance of DB
         DB = DBHelper.getInstance(this);
         raceIds = new ArrayList<>();
 
-
+        // create table
         final TableView<String[]> tb = (TableView<String[]>) findViewById(R.id.finalTable);
         tb.setColumnCount(columnHeaders.length);
         tb.setHeaderBackgroundColor(Color.parseColor("#E4D5B3"));
         //POPULATE
+        // populate tables
         populateData(sName);
 
-        //ADAPTERS
+        //set table details with adapters
         SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(this, columnHeaders);
         headerAdapter.setPaddings(5,0,2,10);
         tb.setHeaderAdapter(headerAdapter);
@@ -89,6 +94,7 @@ public class DisplaySeriesResult extends AppCompatActivity {
 
    }
 
+   //method to populate the table create
     private void populateData(String seriesName) {
         competitorsList = new ArrayList<>();
         {
@@ -124,12 +130,20 @@ public class DisplaySeriesResult extends AppCompatActivity {
 
 
 
+    //method to create pdf
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void CreatePdf(View view) throws IOException {
+
+        // file path and file name
+        int i = 1;
         String dir = Environment.getExternalStorageDirectory() + "/Documents/";
-        String filePath = new File(dir, sName + "_result" + System.currentTimeMillis() + ".pdf").toString();
+        String filePath = new File(dir, sName + "_result_" + i + ".pdf").toString();
         File pdfFile = new File(filePath);
-        pdfFile.createNewFile();
+        while (pdfFile.exists()) {
+            i++;
+            filePath = new File(dir, sName + "_result_" + i + ".pdf").toString();
+            pdfFile = new File(filePath);
+        }
 
         FileOutputStream fOut = new FileOutputStream(filePath);
         PdfWriter pdfWriter = new PdfWriter(fOut);
@@ -137,6 +151,7 @@ public class DisplaySeriesResult extends AppCompatActivity {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
+        // setting title
         document.add(new Paragraph(sName)
                 .setBold()
                 .setUnderline()
@@ -146,9 +161,11 @@ public class DisplaySeriesResult extends AppCompatActivity {
 
         Table table = new Table(new float[] { 80, 80, 80, 80, 80, 80, 80 });
 
+        //setting column headings
         for (String header : columnHeaders)
             table.addCell(new Paragraph(header).setBold());
 
+        // fill data
         for (FinalCompetitorData competitorData : competitorsList) {
             table.addCell(new Paragraph(competitorData.rank + ""));
             table.addCell(new Paragraph(competitorData.boatClass + ""));

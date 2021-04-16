@@ -15,10 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+
+/*
+The competitor details form uses recycler view
+to take input for each competitor.
+This is the adapter for that recycler view
+ */
 public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDetailAdapter.MyViewHolder>{
 
     private LayoutInflater inflater;
     public static ArrayList<EditModel> editModelArrayList;
+    // Constructor
     public CompetitorDetailAdapter(Context ct, ArrayList<EditModel> editModelArrayList){
         inflater = LayoutInflater.from(ct);
         this.editModelArrayList = editModelArrayList;
@@ -28,6 +35,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
     @NonNull
     @Override
     public CompetitorDetailAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // link the row competitor creaetd
         View view = inflater.inflate(R.layout.my_row_competitor,parent,false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
@@ -36,6 +44,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
 
     @Override
     public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder, int position) {
+        // set the values for the edit texts and text views
         holder.tvIndex.setText(editModelArrayList.get(position).getTvIndexValue());
         holder.etClass.setText(editModelArrayList.get(position).getEtClassValue());
         holder.etPY.setText(editModelArrayList.get(position).getEtPYValue());
@@ -47,6 +56,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
 
     @Override
     public int getItemCount() {
+        //used to determine how many rows to generate
         return editModelArrayList.size();
     }
 
@@ -56,6 +66,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
         public MyViewHolder(@NonNull View itemView){
 
             super(itemView);
+            //linking the variable to the element in XML
             sName = itemView.findViewById(R.id.tvSeriesName);
             tvIndex = itemView.findViewById(R.id.tvIndex);
             etClass = itemView.findViewById(R.id.etClass);
@@ -64,7 +75,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
             etHelmName = itemView.findViewById(R.id.etHelmName);
             etCrewName= itemView.findViewById(R.id.etCrewName);
 
-
+            // text watcher to save data even when user scroll in recycler view
             etClass.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -152,7 +163,6 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
             });
 
         }//MyViewHolder
-
 
     }
 }

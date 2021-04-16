@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/*
+Creates form to take user input for series details
+ */
 public class SeriesDetailsForm extends AppCompatActivity {
 
     EditText seriesName,noOfRaces,noOfCompetitors;
     Button submit;
-    DBHelper DB;
+    //DBHelper DB;
     ArrayList<Integer> seriesList;
 
     @Override
@@ -25,14 +28,17 @@ public class SeriesDetailsForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_details_form);
 
+        // link variable to XML object
         seriesName = (EditText) findViewById(R.id.etSeriesName);
         noOfRaces = (EditText) findViewById(R.id.etNoOfRaces);
         noOfCompetitors = (EditText) findViewById(R.id.etNoOfCompetitors);
         submit = (Button) findViewById(R.id.btnSubmit);
 
-        DB = DBHelper.getInstance(this);
+        // get instance of DB
+        //DB = DBHelper.getInstance(this);
         seriesList = new ArrayList<>();
         Toast.makeText(SeriesDetailsForm.this, "Fill in series details", Toast.LENGTH_SHORT).show();
+        // on click listener for submit button
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +47,7 @@ public class SeriesDetailsForm extends AppCompatActivity {
                     int sNoOfCompetitors = noOfCompetitors.getText().toString().equals("") ? 0 : Integer.parseInt(noOfCompetitors.getText().toString());
                     int sNoOfRaces = noOfRaces.getText().toString().equals("") ? 0 : Integer.parseInt(noOfRaces.getText().toString());
 
+                    // validation for inputs
                     if (sName.equals("")) {
                         Toast.makeText(SeriesDetailsForm.this, "Please enter series name", Toast.LENGTH_SHORT).show();
                         return;
@@ -56,10 +63,10 @@ public class SeriesDetailsForm extends AppCompatActivity {
                         return;
                     }//if
 
-                    Intent intent = new Intent(getApplicationContext(), CompetitorDetailsForm.class);
+                    Intent intent = new Intent(SeriesDetailsForm.this, CompetitorDetailsForm.class);
                     intent.putExtra("value", sName);
-                    intent.putExtra("compNo", sNoOfCompetitors);
                     intent.putExtra("raceNo", sNoOfRaces);
+                    intent.putExtra("compNo", sNoOfCompetitors);
                     startActivity(intent);
 
                 }catch (Exception ex) {

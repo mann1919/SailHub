@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import static com.example.sailhub.PasswordHashing.doHashing;
 
+/*
+This class is for the login page
+which validates the users and gives and option to register
+ */
 public class MainActivity extends AppCompatActivity {
 
     EditText userId,password;
@@ -24,20 +28,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        // link variable to XML object
         userId = (EditText) findViewById(R.id.etUserId);
         password = (EditText) findViewById(R.id.etPassword);
         logIn = (Button) findViewById(R.id.btnLogIn);
         Register = (TextView) findViewById(R.id.tvRegister) ;
+        // get instance of DB
         DB = DBHelper.getInstance(this);
 
+        // onclick listener for log in button
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String user = userId.getText().toString();
                 String pass = password.getText().toString();
+                // hashing password
                 String hPassword = doHashing(pass);
+                // validation for input
                 if(user.equals("")||pass.equals(""))
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else{
@@ -58,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // onclick listener for register textview
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

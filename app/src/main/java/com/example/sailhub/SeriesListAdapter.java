@@ -13,13 +13,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+/*
+Adapter for the recycler view used to display series list
+ */
 public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.MyViewHolder>{
 
     ArrayList<String> seriesList;
     Context context;
     private OnSeriesListener seriesListener;
 
+    // Constructor
     public SeriesListAdapter(Context ct, ArrayList data,OnSeriesListener sListener){
         context = ct;
         this.seriesList =  data;
@@ -31,6 +34,7 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater= LayoutInflater.from(context);
+        // link row series
         View view = inflater.inflate(R.layout.my_row_series,parent,false);
         return new MyViewHolder(view,seriesListener);
     }
@@ -42,6 +46,7 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
         holder.imgDelete.setImageResource(R.drawable.ic_delete);
     }
 
+    // determine how many rows to create for recycler view
     @Override
     public int getItemCount() {
         return seriesList.size();
@@ -56,12 +61,14 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.My
             sName = itemView.findViewById(R.id.tvSeriesName);
             imgDelete = itemView.findViewById(R.id.imgDelete);
             this.onSeriesListener = onSeriesListener;
+            // onclick listener for series name
             sName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onSeriesListener.onSeriesClick(getAdapterPosition());
                 }
             });
+            // onclick listener for delete option
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

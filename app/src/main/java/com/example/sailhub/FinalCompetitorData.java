@@ -1,11 +1,15 @@
 package com.example.sailhub;
 
+/*
+This class creates an object for a final competitor
+with all the attributes for series result
+ */
 public class FinalCompetitorData {
 
-
+    // declaring attributes of the competitor
     int rank, points, sailNo, PY;
     String boatClass,helmName,crewName;
-
+    // Constructor to create object
     public FinalCompetitorData(int rank, String bClass,int sailNo,String helmName,String crewName,int PY,int points){
         this.rank = rank;
         this.boatClass = bClass;
@@ -14,10 +18,9 @@ public class FinalCompetitorData {
         this.crewName = crewName;
         this.PY = PY;
         this.points = points;
-
     }
 
-
+    // methods to get and set all the attributes
     public Integer getRank() {
         return rank;
     }

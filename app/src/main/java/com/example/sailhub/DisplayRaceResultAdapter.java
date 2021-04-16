@@ -19,6 +19,9 @@ import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
+/*
+Adapter for the recycler view used to display race result
+ */
 public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceResultAdapter.MyViewHolder> {
 
     private String[] columnHeaders = {"Rank", "Class", "SailNo", "Helm", "Crew", "PY", "Elapsed", "Laps", "Corrected", "Points"};
@@ -27,6 +30,7 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
 
     public static ArrayList<Integer> raceIds;
 
+    // constructor
     DisplayRaceResultAdapter(Context context, String sName){
         this.DB = DBHelper.getInstance(context);
         this.raceIds = getRIds(sName);
@@ -37,6 +41,7 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
+        // link to row race
         View view = inflater.inflate(R.layout.my_row_race, parent,false);
         DisplayRaceResultAdapter.MyViewHolder holder = new DisplayRaceResultAdapter.MyViewHolder(view);
         return holder;
@@ -53,10 +58,10 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
         tb.setColumnCount(columnHeaders.length);
         tb.setHeaderBackgroundColor(Color.parseColor("#E4D5B3"));
 
-        //POPULATE
+        //populate
         String[][] tableData = getTableData(raceId);
 
-        //ADAPTERS
+        //Create table using adapters
         SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(context, columnHeaders);
         headerAdapter.setPaddings(2, 2, 2, 10);
         headerAdapter.setTextSize(16);
@@ -67,6 +72,7 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
         dataAdapter.setTextSize(15);
         tb.setDataAdapter(dataAdapter);
 
+        // onclick listener for the add result button
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +85,7 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
 
     }
 
+    // method to populate table
     private String[][] getTableData(int raceId) {
         ArrayList<CompetitorData> competitorsList = new ArrayList<>();
         Cursor cursor = DB.readRaceResult(raceId);
@@ -123,11 +130,13 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
         return records;
     }//populate
 
+    // determine how many rows to create for recycler view
     @Override
     public int getItemCount() {
         return raceIds.size();
     }
 
+    // get race ids for series name provided
     private ArrayList<Integer> getRIds(String sName) {
         ArrayList<Integer> raceIds = new ArrayList<>();
         Cursor cursor = DB.getRaceIds(sName);
