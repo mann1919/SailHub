@@ -136,7 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // read race results
     public Cursor readRaceResult(Integer raceID){
-        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected,points FROM raceRecords WHERE race_id = '" + raceID +"'" + "ORDER BY corrected ASC";
+        String qry= "SELECT Class,sail_no,helm_name,crew_name,PY,elapsed,laps,corrected,points FROM raceRecords WHERE race_id = '" + raceID +"'" + "ORDER BY corrected ASC, laps DESC";
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -148,8 +148,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // read series result
     public Cursor readSeriesResult(String seriesName){
-        String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, raceRecords.PY ,SUM (raceRecords.points )  FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id WHERE race.series_name = '"
-                + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name ORDER BY SUM(raceRecords.points) ASC";
+        String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, " +
+                "raceRecords.PY ,SUM (raceRecords.points )  FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id " +
+                "WHERE race.series_name = '" + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name " +
+                "ORDER BY SUM(raceRecords.points) ASC";
+
         SQLiteDatabase ClubDB = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -236,21 +239,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    //insert details about the competitor without crew name
-    public Boolean insertCompetitorDataNoCrew(int race_id, String Class, int PY, int sail_no, String helm_name) {
-        SQLiteDatabase ClubDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("race_id", race_id);
-        contentValues.put("Class", Class);
-        contentValues.put("PY", PY);
-        contentValues.put("sail_no", sail_no);
-        contentValues.put("helm_name", helm_name);
-        long result = ClubDB.insert("raceRecords", null, contentValues) ;
-        if (result == -1)
-            return false;
-        else
-            return true;
-    }
 
     // insert points for competitors
     public Boolean insertPoints(int race_id, String Class, int sail_no, String helm_name, int points) {

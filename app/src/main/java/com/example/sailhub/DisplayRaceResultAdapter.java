@@ -105,8 +105,6 @@ public class DisplayRaceResultAdapter extends RecyclerView.Adapter<DisplayRaceRe
             if(elapsed != "") {
                 DB.insertPoints(raceId, bClass, sailNo, helmName, rank);
             }
-
-
             rankCount++;
             CompetitorData competitor = new CompetitorData(rank, bClass, sailNo, helmName, crewName, PY, elapsed, laps, corrected, points);
             competitorsList.add(competitor);

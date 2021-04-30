@@ -37,7 +37,7 @@ public class EnterRaceResult extends AppCompatActivity {
     int noOfComp;
     Context context;
 
-    // pattern to filter elaped input
+    // pattern to filter elapsed input
     private static final String ELAPSED_PATTERN = "(?:[01]\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)";
 
     @Override
@@ -84,8 +84,8 @@ public class EnterRaceResult extends AppCompatActivity {
                     for (int i = 0; i < noOfComp; i++) {
                         View rowView = rvEnterResult.getChildAt(i);
                         EditText laps = (EditText)rowView.findViewById(R.id.etLaps);
-                        if (laps.getText().toString().equals("")) {
-                            Toast.makeText(EnterRaceResult.this, "Enter laps", Toast.LENGTH_SHORT).show();
+                        if (laps.getText().toString().equals("")|| Integer.parseInt(laps.getText().toString())<=0) {
+                            Toast.makeText(EnterRaceResult.this, "Enter laps greater than 0", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         int cLaps = Integer.parseInt(laps.getText().toString());
@@ -165,14 +165,15 @@ public class EnterRaceResult extends AppCompatActivity {
     }
 
     // method to calculate elapsed time
-    private String calculateElapsed(String elapsed, int laps,int maxLaps){
+    protected String calculateElapsed(String elapsed, int laps,int maxLaps){
 
         String[] elapsedTokens = elapsed.split(":");
-        int hours = Integer.parseInt(elapsedTokens[0])*3600;
+        double hours = Integer.parseInt(elapsedTokens[0])*3600;
         int minutes = Integer.parseInt(elapsedTokens[1])*60;
         int seconds = Integer.parseInt(elapsedTokens[2]);
         double calcInSeconds = ((hours + minutes + seconds)/laps)* maxLaps;
-        int correctHours = (int) (calcInSeconds/3600);
+        int correctHours =  (int)(calcInSeconds/3600);
+
         int remainder1 = (int) (calcInSeconds - (correctHours * 3600));
         int correctMinutes = remainder1/60;
         int remainder2 = remainder1 - (correctMinutes *60);
@@ -185,10 +186,10 @@ public class EnterRaceResult extends AppCompatActivity {
     }
 
     // method toc calculate corrected time
-    private String calculateCorrected(String elapsed, double PY){
+    protected String calculateCorrected(String elapsed, double PY){
 
         String[] elapsedTokens = elapsed.split(":");
-        int hours = Integer.parseInt(elapsedTokens[0])*3600;
+        double hours = Integer.parseInt(elapsedTokens[0])*3600;
         int minutes = Integer.parseInt(elapsedTokens[1])*60;
         int seconds = Integer.parseInt(elapsedTokens[2]);
         double calcInSeconds = ((hours + minutes + seconds)/PY)*1000;
@@ -200,7 +201,6 @@ public class EnterRaceResult extends AppCompatActivity {
         String finalHours = String.format("%02d", correctHours);
         String finalMins = String.format("%02d", correctMinutes);
         String finalSecs = String.format("%02d", correctSeconds);
-        //String correctedTime =  String.valueOf(correctHours) +":"+ String.valueOf(correctMinutes) +":"+ String.valueOf(correctSeconds);
         String correctedTime = finalHours + ":" + finalMins + ":"+ finalSecs;
         return correctedTime;
     }

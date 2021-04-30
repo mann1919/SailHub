@@ -20,7 +20,7 @@ public class SeriesDetailsForm extends AppCompatActivity {
 
     EditText seriesName,noOfRaces,noOfCompetitors;
     Button submit;
-    //DBHelper DB;
+    DBHelper DB;
     ArrayList<Integer> seriesList;
 
     @Override
@@ -34,8 +34,8 @@ public class SeriesDetailsForm extends AppCompatActivity {
         noOfCompetitors = (EditText) findViewById(R.id.etNoOfCompetitors);
         submit = (Button) findViewById(R.id.btnSubmit);
 
-        // get instance of DB
-        //DB = DBHelper.getInstance(this);
+        //get instance of DB
+        DB = DBHelper.getInstance(this);
         seriesList = new ArrayList<>();
         Toast.makeText(SeriesDetailsForm.this, "Fill in series details", Toast.LENGTH_SHORT).show();
         // on click listener for submit button
@@ -49,25 +49,30 @@ public class SeriesDetailsForm extends AppCompatActivity {
 
                     // validation for inputs
                     if (sName.equals("")) {
-                        Toast.makeText(SeriesDetailsForm.this, "Please enter series name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SeriesDetailsForm.this,
+                                "Please enter series name", Toast.LENGTH_SHORT).show();
                         return;
                     }//if
 
-                    else if (sNoOfRaces == 0) {
-                        Toast.makeText(SeriesDetailsForm.this, "Please enter number of races", Toast.LENGTH_SHORT).show();
+                    else if (sNoOfRaces <= 0) {
+                        Toast.makeText(SeriesDetailsForm.this,
+                                "Please enter number of races", Toast.LENGTH_SHORT).show();
                         return;
-                    }//if
+                    }//else if
 
-                    else if (sNoOfCompetitors == 0 ||sNoOfCompetitors == 1 ) {
-                        Toast.makeText(SeriesDetailsForm.this, "Please enter number of competitors greater than 1", Toast.LENGTH_SHORT).show();
+                    else if (sNoOfCompetitors <= 1 ) {
+                        Toast.makeText(SeriesDetailsForm.this,
+                                "Please enter number of competitors greater than 1", Toast.LENGTH_SHORT).show();
                         return;
-                    }//if
+                    }// else if
 
-                    Intent intent = new Intent(SeriesDetailsForm.this, CompetitorDetailsForm.class);
-                    intent.putExtra("value", sName);
-                    intent.putExtra("raceNo", sNoOfRaces);
-                    intent.putExtra("compNo", sNoOfCompetitors);
-                    startActivity(intent);
+                    else {
+                        Intent intent = new Intent(SeriesDetailsForm.this, CompetitorDetailsForm.class);
+                        intent.putExtra("seriesName", sName);
+                        intent.putExtra("compNo", sNoOfCompetitors);
+                        intent.putExtra("raceNo", sNoOfRaces);
+                        startActivity(intent);
+                    }
 
                 }catch (Exception ex) {
                     Toast.makeText(SeriesDetailsForm.this, ex.getMessage(), Toast.LENGTH_SHORT).show();

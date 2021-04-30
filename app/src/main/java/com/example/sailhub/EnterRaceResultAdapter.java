@@ -83,7 +83,7 @@ public class EnterRaceResultAdapter extends RecyclerView.Adapter<com.example.sai
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtClassValue(etElapsed.getText().toString());
+                    editModelArrayList.get(getAdapterPosition()).setEtElapsedValue(etElapsed.getText().toString());
                 }
 
                 @Override
@@ -100,7 +100,7 @@ public class EnterRaceResultAdapter extends RecyclerView.Adapter<com.example.sai
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtPYValue(etLaps.getText().toString());
+                    editModelArrayList.get(getAdapterPosition()).setEtLapsValue(etLaps.getText().toString());
                 }
 
                 @Override

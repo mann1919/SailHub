@@ -24,18 +24,18 @@ This is the adapter for that recycler view
 public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDetailAdapter.MyViewHolder>{
 
     private LayoutInflater inflater;
-    public static ArrayList<EditModel> editModelArrayList;
+    public static ArrayList<EditModel> competitorList;
     // Constructor
-    public CompetitorDetailAdapter(Context ct, ArrayList<EditModel> editModelArrayList){
+    public CompetitorDetailAdapter(Context ct, ArrayList<EditModel> competitorList){
         inflater = LayoutInflater.from(ct);
-        this.editModelArrayList = editModelArrayList;
+        this.competitorList = competitorList;
 
     }
 
     @NonNull
     @Override
     public CompetitorDetailAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // link the row competitor creaetd
+        // link the row competitor created
         View view = inflater.inflate(R.layout.my_row_competitor,parent,false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
@@ -45,19 +45,19 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
     @Override
     public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder, int position) {
         // set the values for the edit texts and text views
-        holder.tvIndex.setText(editModelArrayList.get(position).getTvIndexValue());
-        holder.etClass.setText(editModelArrayList.get(position).getEtClassValue());
-        holder.etPY.setText(editModelArrayList.get(position).getEtPYValue());
-        holder.etSailNo.setText(editModelArrayList.get(position).getEtSailNoValue());
-        holder.etHelmName.setText(editModelArrayList.get(position).getEtHelmNameValue());
-        holder.etCrewName.setText(editModelArrayList.get(position).getEtCrewNameValue());
+        holder.tvIndex.setText(competitorList.get(position).getTvIndexValue());
+        holder.etClass.setText(competitorList.get(position).getEtClassValue());
+        holder.etPY.setText(competitorList.get(position).getEtPYValue());
+        holder.etSailNo.setText(competitorList.get(position).getEtSailNoValue());
+        holder.etHelmName.setText(competitorList.get(position).getEtHelmNameValue());
+        holder.etCrewName.setText(competitorList.get(position).getEtCrewNameValue());
         Log.d("print","yes");
     }
 
     @Override
     public int getItemCount() {
         //used to determine how many rows to generate
-        return editModelArrayList.size();
+        return competitorList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -85,7 +85,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtClassValue(etClass.getText().toString());
+                    competitorList.get(getAdapterPosition()).setEtClassValue(etClass.getText().toString());
                 }
 
                 @Override
@@ -93,6 +93,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
 
                 }
             });
+
             etPY.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -102,7 +103,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtPYValue(etPY.getText().toString());
+                    competitorList.get(getAdapterPosition()).setEtPYValue(etPY.getText().toString());
                 }
 
                 @Override
@@ -119,7 +120,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtSailNoValue(etSailNo.getText().toString());
+                    competitorList.get(getAdapterPosition()).setEtSailNoValue(etSailNo.getText().toString());
                 }
 
                 @Override
@@ -136,7 +137,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtHelmNameValue(etHelmName.getText().toString());
+                    competitorList.get(getAdapterPosition()).setEtHelmNameValue(etHelmName.getText().toString());
                 }
 
                 @Override
@@ -153,7 +154,7 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    editModelArrayList.get(getAdapterPosition()).setEtCrewNameValue(etCrewName.getText().toString());
+                    competitorList.get(getAdapterPosition()).setEtCrewNameValue(etCrewName.getText().toString());
                 }
 
                 @Override

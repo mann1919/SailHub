@@ -39,7 +39,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         Toast.makeText(CompetitorDetailsForm.this, "Fill in competitor details", Toast.LENGTH_SHORT).show();
         //get series name
         seriesName = findViewById(R.id.tvSeriesName);
-        sName = getIntent().getExtras().getString("value");
+        sName = getIntent().getExtras().getString("seriesName");
         seriesName.setText(sName);
 
         // get no of races
@@ -48,6 +48,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         // get instance of DB
         DB = DBHelper.getInstance(this);
 
+        //
         raceIds = new ArrayList<>();
 
         // populate competitor list
@@ -66,7 +67,6 @@ public class CompetitorDetailsForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    // insert series details
                     DB.insertSeriesData(sName, sNoOfRaces, noOfComp);
                     for (int i = 0; i < sNoOfRaces; i++) {
                         Boolean checkRaceData = DB.insertRaceEntries(sName);
@@ -78,7 +78,6 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                     }
                     // get all race ids for the series
                     getRId(sName);
-
                     for (int raceId : raceIds) {
                         for (int i = 0; i < noOfComp; i++) {
 
@@ -115,22 +114,15 @@ public class CompetitorDetailsForm extends AppCompatActivity {
                                 return;
                             }//if
 
-
-                            Boolean checkInsertData;
-                            // entering data based on crew entered or no
-                            if(cCrewName.equals("")) {
-                                checkInsertData = DB.insertCompetitorDataNoCrew(raceId, cClass, cPY, cSailNo, cHelmName);
-                            }
-                            else{
-                                checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName, cCrewName);
-                            }
+                            // entering data in database.
+                            Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName,cCrewName);
 
                             // catch error
                             if (!checkInsertData)
                                 throw new Exception("Error while inserting new entry");
 
-                        }
-                    }
+                        }// for every competitor
+                    }// for every race id
 
                     // toast to inform users about task completion
                     Toast.makeText(CompetitorDetailsForm.this, "Series created with competitors", Toast.LENGTH_SHORT).show();
@@ -168,9 +160,9 @@ public class CompetitorDetailsForm extends AppCompatActivity {
 
         for(int i = 1; i <=noOfComp; i++){
 
-            EditModel editModel = new EditModel();
-            editModel.setTvIndexValue(String.valueOf(i));
-            list.add(editModel);
+            EditModel competitor = new EditModel();
+            competitor.setTvIndexValue(String.valueOf(i));
+            list.add(competitor);
         }
 
         return list;
