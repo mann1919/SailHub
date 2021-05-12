@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase ClubDB) {
         String sqlUsers = "create Table users (user_id INTEGER PRIMARY KEY, password TEXT)";
-        String sqlSeries = "create Table series (series_number INTEGER , series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
+        String sqlSeries = "create Table series (series_name TEXT PRIMARY KEY, no_of_races INTEGER, no_of_competitors INTEGER)";
         String sqlRace = "create Table race (race_id INTEGER PRIMARY KEY AUTOINCREMENT, series_name TEXT , FOREIGN KEY (series_name) REFERENCES series(series_name))";
         String sqlRaceRecords = "create Table raceRecords (raceRecords_id INTEGER PRIMARY KEY AUTOINCREMENT, race_id INTEGER, Class TEXT, sail_no INTEGER, helm_name TEXT, crew_name TEXT, PY INTEGER, elapsed TEXT, laps INTEGER, corrected TEXT, points INTEGER)";
         ClubDB.execSQL(sqlUsers);
@@ -84,7 +84,8 @@ public class DBHelper extends SQLiteOpenHelper {
     // check if the inputted credentials match and exist in table
     public Boolean checkUserIdPassword(String userId, String password) {
         SQLiteDatabase ClubDB = this.getWritableDatabase();
-        Cursor cursor = ClubDB.rawQuery("Select * from users where user_id = ? and password = ?", new String[]{userId, password});
+        Cursor cursor = ClubDB.rawQuery("Select * from users " +
+                "where user_id = ? and password = ?", new String[]{userId, password});
         if (cursor.getCount() > 0)
             return true;
         else
@@ -148,9 +149,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // read series result
     public Cursor readSeriesResult(String seriesName){
-        String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name, raceRecords.crew_name, " +
-                "raceRecords.PY ,SUM (raceRecords.points )  FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id " +
-                "WHERE race.series_name = '" + seriesName +"' Group BY raceRecords.Class,raceRecords.sail_no,raceRecords.helm_name " +
+        String qry= "SELECT raceRecords.Class, raceRecords.sail_no, raceRecords.helm_name," +
+                " raceRecords.crew_name, " + "raceRecords.PY ,SUM (raceRecords.points ) " +
+                " FROM raceRecords INNER JOIN race ON raceRecords.race_id=race.race_id " +
+                "WHERE race.series_name = '" + seriesName +"' Group BY raceRecords.Class," +
+                "raceRecords.sail_no,raceRecords.helm_name " +
                 "ORDER BY SUM(raceRecords.points) ASC";
 
         SQLiteDatabase ClubDB = this.getReadableDatabase();

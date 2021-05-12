@@ -43,7 +43,8 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
 
 
     @Override
-    public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CompetitorDetailAdapter.MyViewHolder holder,
+                                 int position) {
         // set the values for the edit texts and text views
         holder.tvIndex.setText(competitorList.get(position).getTvIndexValue());
         holder.etClass.setText(competitorList.get(position).getEtClassValue());
@@ -78,14 +79,21 @@ public class CompetitorDetailAdapter extends RecyclerView.Adapter<CompetitorDeta
             // text watcher to save data even when user scroll in recycler view
             etClass.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void beforeTextChanged(CharSequence charSequence,
+                                              int i,
+                                              int i1,
+                                              int i2) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void onTextChanged(CharSequence charSequence,
+                                          int i,
+                                          int i1,
+                                          int i2) {
 
-                    competitorList.get(getAdapterPosition()).setEtClassValue(etClass.getText().toString());
+                    competitorList.get(getAdapterPosition()).
+                            setEtClassValue(etClass.getText().toString());
                 }
 
                 @Override

@@ -43,7 +43,7 @@ public class CompetitorDetailsForm extends AppCompatActivity {
         seriesName.setText(sName);
 
         // get no of races
-        sNoOfRaces = getIntent().getExtras().getInt("raceNo");
+        //sNoOfRaces = getIntent().getExtras().getInt("raceNo");
 
         // get instance of DB
         DB = DBHelper.getInstance(this);
@@ -67,60 +67,78 @@ public class CompetitorDetailsForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    DB.insertSeriesData(sName, sNoOfRaces, noOfComp);
-                    for (int i = 0; i < sNoOfRaces; i++) {
-                        Boolean checkRaceData = DB.insertRaceEntries(sName);
-                        if (!checkRaceData) {
-                            Toast.makeText(CompetitorDetailsForm.this, "Enter Series details again", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), SeriesDetailsForm.class);
-                            startActivity(intent);
+                    ArrayList<CompetitorData> competitors = new ArrayList<>();
+
+                    for (int i = 0; i < noOfComp; i++) {
+
+                        // link variable to XML object
+                        View rowView = rvCompetitors.getChildAt(i);
+                        EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
+                        EditText PY = (EditText)rowView.findViewById(R.id.etPY);
+                        EditText sailNo = (EditText)rowView.findViewById(R.id.etSailNo);
+                        EditText helmName = (EditText)rowView.findViewById(R.id.etHelmName);
+                        EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
+
+
+                        // get value from edit text
+                        String cClass = bClass.getText().toString();
+                        int cPY = PY.getText().toString().equals("") ? 0 : Integer.parseInt(PY.getText().toString());
+                        int cSailNo = sailNo.getText().toString().equals("") ? 0 : Integer.parseInt(sailNo.getText().toString());
+                        String cHelmName = helmName.getText().toString();
+                        String cCrewName = crewName.getText().toString();
+                        // validation for input
+                        if(cClass.equals("")){
+                            Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
+                            return;
                         }//if
-                    }
+                        else if(cPY == 0){
+                            Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
+                            return;
+                        }//if
+                        else if(cSailNo == 0){
+                            Toast.makeText(CompetitorDetailsForm.this, "Enter SailNo", Toast.LENGTH_SHORT).show();
+                            return;
+                        }//if
+                        else if(cHelmName.equals("")){
+                            Toast.makeText(CompetitorDetailsForm.this, "Enter Helm Name", Toast.LENGTH_SHORT).show();
+                            return;
+                        }//if
+
+                        competitors.add(new CompetitorData(
+                                0,
+                                cClass,
+                                cSailNo,
+                                cHelmName,
+                                cCrewName,
+                                cPY,
+                                "",
+                                0,
+                                "",
+                                0));
+                        // entering data in database.
+                        // Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName,cCrewName);
+
+                        // catch error
+                        // if (!checkInsertData)
+                        //    throw new Exception("Error while inserting new entry");
+
+                    }// for every competitor
+
                     // get all race ids for the series
                     getRId(sName);
+
                     for (int raceId : raceIds) {
-                        for (int i = 0; i < noOfComp; i++) {
-
-                            // link variable to XML object
-                            View rowView = rvCompetitors.getChildAt(i);
-                            EditText bClass = (EditText)rowView.findViewById(R.id.etClass);
-                            EditText PY = (EditText)rowView.findViewById(R.id.etPY);
-                            EditText sailNo = (EditText)rowView.findViewById(R.id.etSailNo);
-                            EditText helmName = (EditText)rowView.findViewById(R.id.etHelmName);
-                            EditText crewName = (EditText)rowView.findViewById(R.id.etCrewName);
-
-
-                            // get value from edit text
-                            String cClass = bClass.getText().toString();
-                            int cPY = PY.getText().toString().equals("") ? 0 : Integer.parseInt(PY.getText().toString());
-                            int cSailNo = sailNo.getText().toString().equals("") ? 0 : Integer.parseInt(sailNo.getText().toString());
-                            String cHelmName = helmName.getText().toString();
-                            String cCrewName = crewName.getText().toString();
-                            // validation for input
-                            if(cClass.equals("")){
-                                Toast.makeText(CompetitorDetailsForm.this, "Enter Class", Toast.LENGTH_SHORT).show();
-                                return;
-                            }//if
-                            else if(cPY == 0){
-                                Toast.makeText(CompetitorDetailsForm.this, "Enter PY", Toast.LENGTH_SHORT).show();
-                                return;
-                            }//if
-                            else if(cSailNo == 0){
-                                Toast.makeText(CompetitorDetailsForm.this, "Enter SailNo", Toast.LENGTH_SHORT).show();
-                                return;
-                            }//if
-                            else if(cHelmName.equals("")){
-                                Toast.makeText(CompetitorDetailsForm.this, "Enter Helm Name", Toast.LENGTH_SHORT).show();
-                                return;
-                            }//if
-
-                            // entering data in database.
-                            Boolean checkInsertData = DB.insertCompetitorData(raceId, cClass, cPY, cSailNo, cHelmName,cCrewName);
-
+                        for (CompetitorData competitor : competitors) {
+                            Boolean checkInsertData = DB.insertCompetitorData(
+                                    raceId,
+                                    competitor.boatClass,
+                                    competitor.PY,
+                                    competitor.sailNo,
+                                    competitor.helmName,
+                                    competitor.crewName);
                             // catch error
                             if (!checkInsertData)
                                 throw new Exception("Error while inserting new entry");
-
                         }// for every competitor
                     }// for every race id
 

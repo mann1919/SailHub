@@ -49,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
                 if(user.equals("")||pass.equals(""))
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else{
-                    Boolean checkUserPass = DB.checkUserIdPassword(user, hPassword);
                     Boolean checkUser = DB.checkUserId(user);
+
+                    Boolean checkUserPass = DB.checkUserIdPassword(user, hPassword);
                     if(checkUserPass){
-                        Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
-                        Intent intent  = new Intent(getApplicationContext(), ListSeries.class);
+                        Toast.makeText(MainActivity.this,
+                                "Sign in successful", Toast.LENGTH_SHORT).show();
+                        Intent intent  = new Intent(getApplicationContext(),
+                                ListSeries.class);
                         startActivity(intent);
                     }
                     else if(checkUser){

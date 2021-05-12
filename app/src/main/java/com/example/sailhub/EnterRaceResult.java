@@ -108,7 +108,7 @@ public class EnterRaceResult extends AppCompatActivity {
                         int cSailNo = Integer.parseInt(SailNo.getText().toString());
                         String cHelmName = helmName.getText().toString();
                         int cLaps = Integer.parseInt(laps.getText().toString());
-                        double cPY = Double.parseDouble(CompetitorData.get(i).getTvPYValue());
+                        int cPY = Integer.parseInt(CompetitorData.get(i).getTvPYValue());
                         String tempElapsed = elapsed.getText().toString();
 
                         // pattern check for elapsed
@@ -167,6 +167,9 @@ public class EnterRaceResult extends AppCompatActivity {
     // method to calculate elapsed time
     protected String calculateElapsed(String elapsed, int laps,int maxLaps){
 
+        if (laps < 1)
+            throw new IllegalArgumentException("Laps needs to be > 1");
+
         String[] elapsedTokens = elapsed.split(":");
         double hours = Integer.parseInt(elapsedTokens[0])*3600;
         int minutes = Integer.parseInt(elapsedTokens[1])*60;
@@ -186,7 +189,9 @@ public class EnterRaceResult extends AppCompatActivity {
     }
 
     // method toc calculate corrected time
-    protected String calculateCorrected(String elapsed, double PY){
+    protected String calculateCorrected(String elapsed, int PY){
+        if (PY < 0)
+            throw new IllegalArgumentException("PY cannot be negative");
 
         String[] elapsedTokens = elapsed.split(":");
         double hours = Integer.parseInt(elapsedTokens[0])*3600;

@@ -67,10 +67,19 @@ public class SeriesDetailsForm extends AppCompatActivity {
                     }// else if
 
                     else {
+                        DB.insertSeriesData(sName, sNoOfRaces, sNoOfCompetitors);
+                        for (int i = 0; i < sNoOfRaces; i++) {
+                            Boolean checkRaceData = DB.insertRaceEntries(sName);
+                            if (!checkRaceData) {
+                                Toast.makeText(SeriesDetailsForm.this, "Enter Series details again", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), SeriesDetailsForm.class);
+                                startActivity(intent);
+                            }//if
+                        }
                         Intent intent = new Intent(SeriesDetailsForm.this, CompetitorDetailsForm.class);
                         intent.putExtra("seriesName", sName);
                         intent.putExtra("compNo", sNoOfCompetitors);
-                        intent.putExtra("raceNo", sNoOfRaces);
+                        //intent.putExtra("raceNo", sNoOfRaces);
                         startActivity(intent);
                     }
 
