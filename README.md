@@ -17,10 +17,11 @@ as it needs to meet all the requirements.
 
 ## Screenshots
 
-![Login page]()
+<img src="images/login.png" width = "500">
 
-![Home page]()
+<img src="images/listOfSeries.png" width = "500">
 
-![Diplay race results]()
+<img src="images/DisplayRaceResults.png" width = "500">
 
-![PDF output]()
+<img src="images/displayResultPDF.png" width = "500">
+
